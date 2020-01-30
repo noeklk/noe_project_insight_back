@@ -23,5 +23,4 @@ moduleRoute(app);
 sessionRoute(app);
 userRoute(app);
 
-
 app.listen(port, hostname);
