@@ -1,10 +1,9 @@
-// src/api/controllers/sessionController.js
+// src/api/controllers/postController.js
 const Session = require('../model/sessionModel');
 
 exports.ListAllSessions = (req, res) => {
 
   Session.find({}, (error, sessions) => {
-
     if (error) {
       res.status(500);
       console.log(error);
@@ -18,7 +17,7 @@ exports.ListAllSessions = (req, res) => {
 }
 
 exports.CreateASession = (req, res) => {
-  let new_session = new Session(req.body);
+  const new_session = new Session(req.body);
 
   try {
     new_session.save((error, session) => {
@@ -69,7 +68,7 @@ exports.DeleteASession = (req, res) => {
       }
       else {
         res.status(200);
-        res.json({ message: "Promossion supprimé" })
+        res.json({ message: "Session supprimé" })
       }
     })
   } catch (e) {
