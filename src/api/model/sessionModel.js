@@ -8,10 +8,12 @@ let sessionSchema = new Schema({
   },
   annee_promo: {
     type: Date,
-    required : true
+    required: true
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
   }
 });
 
-mongoose.model('Session', sessionSchema);
-
-module.exports = mongoose.model('Session');
+module.exports = mongoose.model('Session', sessionSchema);
