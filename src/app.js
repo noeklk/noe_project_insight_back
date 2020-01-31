@@ -1,9 +1,10 @@
+// Importation des libraires
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+// Configuration réseau
 const app = express();
-
 const hostname = '0.0.0.0';
 const port = 3000;
 
