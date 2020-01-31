@@ -8,7 +8,6 @@ exports.CreateAModule = (req, res) => {
   new_module.id_session = req.params.id_session;
 
   try {
-
     Session.findById(id_session, (error, session) => {
 
       if (session) {
@@ -18,7 +17,7 @@ exports.CreateAModule = (req, res) => {
           if (error) {
             res.status(400);
             console.log(error);
-            res.json({ message: "Il manque des infos" });
+            res.json({ message: 'Il manque des informations' });
             return;
           }
           else {
@@ -31,7 +30,7 @@ exports.CreateAModule = (req, res) => {
       else {
         res.status(400);
         console.log(error);
-        res.json({ message: `id_session : ${id_session} non existant` })
+        res.json({ message: `l'id session: ${id_session} n'existe pas` })
       }
     })
   } catch (e) {
@@ -41,24 +40,46 @@ exports.CreateAModule = (req, res) => {
   }
 }
 
-exports.ListAllModulesFromASession = (req, res) => {
-  Module.find({ session_id: req.params.session_id }, (error, modules) => {
-    if (error) {
-      res.status(500);
-      console.log(error);
-      res.json({ message: "Erreur serveur." })
-    }
-    else {
-      res.status(200);
-      res.json(modules);
-    }
-  })
+exports.GetAllModulesBySessionId = (req, res) => {
+  const { id_session } = req.params;
+
+  try {
+    Session.findById(id_session, (error, session) => {
+
+      if (session) {
+        console.log(`id_session : ${id_session} existe, listing des modules correspondant`);
+
+        Module.find({ id_session }, (error, modules) => {
+          if (error) {
+            res.status(500);
+            console.log(error);
+            res.json({ message: "Erreur serveur." })
+          }
+          else {
+            res.status(200);
+            res.json(modules);
+          }
+        })
+      } else {
+        res.status(400);
+        console.log(error);
+        console.log(`l'id session: ${id_session} n'existe pas`);
+        res.json({ message: 'id non existant' });
+      }
+    })
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: "Erreur serveur." })
+  }
 }
 
 exports.GetAModule = (req, res) => {
   try {
     Module.findById(req.params.id_module, (error, module) => {
+
       if (error) {
+
         res.status(400);
         console.log(error);
         res.json({ message: "Id introuvable" });
@@ -78,6 +99,7 @@ exports.GetAModule = (req, res) => {
 exports.UpdateAModule = (req, res) => {
   try {
     Module.findByIdAndUpdate(req.params.id_module, req.body, { new: true }, (error, module) => {
+
       if (error) {
         res.status(400);
         console.log(error);
@@ -99,14 +121,16 @@ exports.DeleteAModule = (req, res) => {
 
   try {
     Module.findByIdAndRemove(id_module, (error) => {
+
       if (error) {
+
         res.status(400);
         console.log(error);
         res.json({ message: "Id introuvable" });
       }
       else {
         res.status(200);
-        res.json({ message: `Module supprimé avec l'id ${id_module}` })
+        res.json({ message: `Le module avec l'id: ${id_module} a été correctement supprimé` })
       }
     })
   } catch (e) {

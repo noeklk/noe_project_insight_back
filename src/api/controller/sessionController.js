@@ -6,6 +6,7 @@ exports.CreateASession = (req, res) => {
 
   try {
     new_session.save((error, session) => {
+      
       if (error) {
         res.status(400);
         console.log(error);
@@ -23,9 +24,9 @@ exports.CreateASession = (req, res) => {
   }
 }
 
-exports.ListAllSessions = (req, res) => {
-
+exports.GetAllSessionsById = (req, res) => {
   Session.find({}, (error, sessions) => {
+
     if (error) {
       res.status(500);
       console.log(error);
@@ -38,9 +39,10 @@ exports.ListAllSessions = (req, res) => {
   })
 }
 
-exports.UpdateASession = (req, res) => {
+exports.UpdateASessionById = (req, res) => {
   try {
     Session.findByIdAndUpdate(req.params.session_id, req.body, { new: true }, (error, session) => {
+
       if (error) {
         res.status(400);
         console.log(error);
@@ -58,9 +60,10 @@ exports.UpdateASession = (req, res) => {
   }
 }
 
-exports.DeleteASession = (req, res) => {
+exports.DeleteASessionById = (req, res) => {
   try {
     Session.findByIdAndRemove(req.params.session_id, (error) => {
+
       if (error) {
         res.status(400);
         console.log(error);

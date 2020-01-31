@@ -4,10 +4,10 @@ const sessionController = require('../controller/sessionController');
 // Exporte la fonction anonyme
 module.exports = (app) => {
   app.route('/sessions')
-    .get(sessionController.ListAllSessions)
+    .get(sessionController.GetAllSessionsById)
     .post(sessionController.CreateASession);
 
   app.route('/sessions/:session_id')
-    .put(sessionController.UpdateASession)
-    .delete(sessionController.DeleteASession);
+    .put(sessionController.UpdateASessionById)
+    .delete(sessionController.DeleteASessionById);
 }
