@@ -1,21 +1,6 @@
 // src/api/controllers/postController.js
 const Session = require('../model/sessionModel');
 
-exports.ListAllSessions = (req, res) => {
-
-  Session.find({}, (error, sessions) => {
-    if (error) {
-      res.status(500);
-      console.log(error);
-      res.json({ message: "Erreur serveur." })
-    }
-    else {
-      res.status(200);
-      res.json(sessions);
-    }
-  })
-}
-
 exports.CreateASession = (req, res) => {
   const new_session = new Session(req.body);
 
@@ -36,6 +21,21 @@ exports.CreateASession = (req, res) => {
     console.log(e);
     res.json({ message: "Erreur serveur" })
   }
+}
+
+exports.ListAllSessions = (req, res) => {
+
+  Session.find({}, (error, sessions) => {
+    if (error) {
+      res.status(500);
+      console.log(error);
+      res.json({ message: "Erreur serveur." })
+    }
+    else {
+      res.status(200);
+      res.json(sessions);
+    }
+  })
 }
 
 exports.UpdateASession = (req, res) => {

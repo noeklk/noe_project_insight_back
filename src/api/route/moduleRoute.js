@@ -3,11 +3,11 @@ const moduleController = require('../controller/moduleController');
 
 // Exporte la fonction anonyme
 module.exports = (app) => {
-  app.route('/sessions/:session_id/modules')
+  app.route('/sessions/:id_session/modules')
     .get(moduleController.ListAllModulesFromASession)
     .post(moduleController.CreateAModule);
 
-  app.route('/modules/:module_id')
+  app.route('/modules/:id_module')
     .get(moduleController.GetAModule)
     .put(moduleController.UpdateAModule)
     .delete(moduleController.DeleteAModule);
