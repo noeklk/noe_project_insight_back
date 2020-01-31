@@ -23,7 +23,7 @@ exports.CreateAModule = (req, res) => {
           }
           else {
             res.status(201);
-            res.json(module)
+            res.json(module);
           }
         })
 
