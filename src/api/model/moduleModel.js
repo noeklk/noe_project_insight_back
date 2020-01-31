@@ -24,4 +24,5 @@ let moduleSchema = new Schema({
         default: Date.now
     }
 });
+
 module.exports = mongoose.model('Module', moduleSchema);

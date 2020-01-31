@@ -1,7 +1,7 @@
 // src/api/controllers/sessionController.js
 const Session = require('../model/sessionModel');
 
-exports.list_all_sessions = (req, res) => {
+exports.ListAllSessions = (req, res) => {
 
   Session.find({}, (error, sessions) => {
 
@@ -17,7 +17,7 @@ exports.list_all_sessions = (req, res) => {
   })
 }
 
-exports.create_a_session = (req, res) => {
+exports.CreateASession = (req, res) => {
   let new_session = new Session(req.body);
 
   try {
@@ -39,7 +39,7 @@ exports.create_a_session = (req, res) => {
   }
 }
 
-exports.update_a_session = (req, res) => {
+exports.UpdateASession = (req, res) => {
   try {
     Session.findByIdAndUpdate(req.params.session_id, req.body, { new: true }, (error, session) => {
       if (error) {
@@ -59,7 +59,7 @@ exports.update_a_session = (req, res) => {
   }
 }
 
-exports.delete_a_session = (req, res) => {
+exports.DeleteASession = (req, res) => {
   try {
     Session.findByIdAndRemove(req.params.session_id, (error) => {
       if (error) {

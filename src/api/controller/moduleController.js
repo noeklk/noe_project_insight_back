@@ -2,7 +2,7 @@
 const Module = require('../model/moduleModel');
 // /promos/:promo_id/modules
 
-exports.list_all_modules_from_a_session = (req, res) => {
+exports.ListAllModulesFromASession = (req, res) => {
   Module.find({ session_id: req.params.session_id }, (error, modules) => {
     if (error) {
       res.status(500);
@@ -15,7 +15,7 @@ exports.list_all_modules_from_a_session = (req, res) => {
     }
   })
 }
-exports.create_a_module = (req, res) => {
+exports.CreateAModule = (req, res) => {
   let new_module = new Module(req.body);
   new_module.session_id = req.params.session_id;
   try {
@@ -36,7 +36,7 @@ exports.create_a_module = (req, res) => {
     res.json({ message: "Erreur serveur" })
   }
 }
-exports.get_a_module = (req, res) => {
+exports.GetAModule = (req, res) => {
   try {
     Module.findById(req.params.module_id, (error, module) => {
       if (error) {
@@ -55,7 +55,7 @@ exports.get_a_module = (req, res) => {
     res.json({ message: "Erreur serveur" })
   }
 }
-exports.update_a_module = (req, res) => {
+exports.UpdateAModule = (req, res) => {
   try {
     Module.findByIdAndUpdate(req.params.module_id, req.body, { new: true }, (error, module) => {
       if (error) {
@@ -74,7 +74,7 @@ exports.update_a_module = (req, res) => {
     res.json({ message: "Erreur serveur" })
   }
 }
-exports.delete_a_module = (req, res) => {
+exports.DeleteAModule = (req, res) => {
   try {
     Module.findByIdAndRemove(req.params.module_id, (error) => {
       if (error) {
