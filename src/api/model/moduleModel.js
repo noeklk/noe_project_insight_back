@@ -10,7 +10,7 @@ let moduleSchema = new Schema({
         type: String,
         required: "il faut mettre un id aux intervenants"
     },
-    session_id: {
+    id_session: {
         type: String,
         required: "il faut mettre un id à la session"
     },
