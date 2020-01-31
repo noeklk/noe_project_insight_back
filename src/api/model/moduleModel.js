@@ -11,7 +11,8 @@ let moduleSchema = new Schema({
         required: "il faut mettre un id aux intervenants"
     },
     session_id: {
-        type: String
+        type: String,
+        required: "il faut mettre un id à la session"
     },
     date_debut: {
         type: Date
