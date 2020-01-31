@@ -1,4 +1,4 @@
-// src/api/controllers/postController.js
+// src/api/controllers/sessionController.js
 const mongoose = require('mongoose');
 const Session = require('../model/sessionModel');
 
