@@ -6,7 +6,7 @@
 
 This API should allow :
 * students to rate their teacher's modules 
-* administrators to create, read, update and delete sessions or modules or users.
+* administrators to create, read, update and delete sessions or modules or users. They can see the average sessions scores too.
 
 
 ## URL
@@ -26,5 +26,5 @@ docker exec -ti project_node bash
 
 ## Modify environment variables
 ```
-Rename the .env.sample to .env and insert your values (key, database name)
+Rename the .env.sample to .env and insert your values (JWT_KEY, DB_NAME)
 ```
