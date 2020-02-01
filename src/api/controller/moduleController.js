@@ -2,7 +2,7 @@
 const Module = require('../model/moduleModel');
 const Session = require('../model/sessionModel');
 
-exports.CreateAModule = (req, res) => {
+exports.CreateAModuleOnSessionId = (req, res) => {
   const new_module = new Module(req.body);
   const { id_session } = req.params;
   new_module.id_session = req.params.id_session;

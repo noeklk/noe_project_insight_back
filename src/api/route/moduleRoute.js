@@ -5,7 +5,7 @@ const moduleController = require('../controller/moduleController');
 module.exports = (app) => {
   app.route('/sessions/:id_session/modules')
     .get(moduleController.GetAllModulesBySessionId)
-    .post(moduleController.CreateAModule);
+    .post(moduleController.CreateAModuleOnSessionId);
 
   app.route('/modules/:id_module')
     .get(moduleController.GetAModuleById)
