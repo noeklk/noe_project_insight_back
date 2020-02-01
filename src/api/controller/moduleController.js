@@ -1,31 +1,44 @@
 const Module = require('../model/moduleModel');
 const Session = require('../model/sessionModel');
+const User = require('../model/userModel');
 const errorMessage = 'Erreur Serveur';
 
-exports.CreateAModuleOnSessionId = (req, res) => {
-  const new_module = new Module(req.body);
+exports.CreateAModuleOnSessionIdAndContributorId = (req, res) => {
+  let new_module = new Module(req.body);
   const { id_session } = req.params;
-  new_module.id_session = req.params.id_session;
+  const { id_intervenant } = req.params;
+  new_module.id_session = id_session;
+  new_module.id_intervenant = id_intervenant;
 
   try {
-    Session.findById(id_session, (error, sessions) => {
-      if (sessions) {
-        console.log(`id_session : ${id_session} existe, création du module`);
+    User.find( {_id: id_intervenant, role: 'intervenant'} , (error, intervenants) => {
+      if (intervenants) {
+        console.log(`id_intervenant: ${id_intervenant} existe, check de la session`);
 
-        new_module.save((error, modules) => {
-          if (modules) {
-            res.status(201);
-            res.json(modules);
+        Session.findById(id_session, (error, sessions) => {
+          if (sessions) {
+
+            new_module.save((error, modules) => {
+              if (modules) {
+                res.status(201);
+                res.json(modules);
+              } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: 'Il manque des informations' });
+              }
+            });
           } else {
             res.status(400);
             console.log(error);
-            res.json({ message: 'Il manque des informations' });
+            res.json({ message: `L'id session: ${id_session} n'existe pas` });
           }
         });
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: `L'id session: ${id_session} n'existe pas` });
+
+        res.json({ message: `L'id intervenant: ${id_intervenant} n'existe pas`})
       }
     });
   } catch (e) {
@@ -135,7 +148,7 @@ exports.DeleteAModuleById = (req, res) => {
       if (modules) {
         res.status(200);
         res.json({ message: `Le module avec l'id: ${id_module} a été correctement supprimé` });
-        
+
       } else {
         res.status(400);
         console.log(error);

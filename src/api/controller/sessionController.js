@@ -92,7 +92,7 @@ exports.DeleteASessionById = (req, res) => {
         res.json({ message: `La session avec l'id: ${id_session} a été correctement supprimé` });
       } else {
         res.status(400);
-        console.log(error);
+        if(error) console.log(error);
         res.json({ message: `L'id de session: ${id_session} est introuvable` });
       }
     });

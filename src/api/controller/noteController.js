@@ -5,10 +5,22 @@ const User = require('../model/userModel');
 const errorMessage = 'Erreur Serveur';
 
 exports.CreateANoteOnModuleIdAndStudentId = (req, res) => {
+    let new_note = new User(req.body);
     const { id_module } = req.params;
     const { id_etudiant } = req.params;
+    new_note.id_module = id_module;
+    new_note.id_etudiant = id_etudiant;
 
-    //condition role = etudiant
+    // let new_user
+
+    try {
+        // User.find({_id: id_etudiant})
+
+
+    } catch (e) {
+        res.status(500);
+        res.json({ message: errorMessage})
+    }
 
 };
 
