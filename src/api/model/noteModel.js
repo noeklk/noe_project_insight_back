@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let noteSchema = new Schema({
+const noteSchema = new Schema({
     note: {
         type: Number,
         required: 'Il faut une note pour le module'
