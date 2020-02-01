@@ -11,4 +11,4 @@ module.exports = (app) => {
     .get(sessionController.GetASessionById)
     .put(sessionController.UpdateASessionById)
     .delete(sessionController.DeleteASessionById);
-}
+};

@@ -14,4 +14,4 @@ module.exports = (app) => {
 
   app.route('/modules')
     .get(moduleController.GetAllModules);
-}
+};
