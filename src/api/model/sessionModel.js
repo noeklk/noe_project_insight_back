@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let sessionSchema = new Schema({
+const sessionSchema = new Schema({
   nom_promo: {
     type: String,
     required: true
