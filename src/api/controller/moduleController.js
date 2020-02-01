@@ -1,4 +1,3 @@
-// src/api/controllers/moduleController.js
 const Module = require('../model/moduleModel');
 const Session = require('../model/sessionModel');
 const errorMessage = 'Erreur Serveur';

@@ -1,6 +1,17 @@
 const Note = require('../model/noteModel');
 const Module = require('../model/moduleModel');
+const User = require('../model/userModel');
+
 const errorMessage = 'Erreur Serveur';
+
+exports.CreateANoteOnModuleIdAndStudentId = (req, res) => {
+    const { id_module } = req.params;
+    const { id_etudiant } = req.params;
+
+    //condition role = etudiant
+
+};
+
 
 exports.GetAllNotesByModuleId = (req, res) => {
     const { id_module } = req.params;
@@ -31,5 +42,3 @@ exports.GetAllNotesByModuleId = (req, res) => {
         res.json({ message: errorMessage });
     }
 };
-
-exports.CreateANoteOnModuleId = (req, res) => { };

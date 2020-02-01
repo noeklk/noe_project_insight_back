@@ -1,5 +1,5 @@
-// src/api/controllers/postController.js
 const Session = require('../model/sessionModel');
+
 const errorMessage = 'Erreur Serveur';
 
 exports.CreateASession = (req, res) => {

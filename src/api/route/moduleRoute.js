@@ -1,4 +1,3 @@
-// src/api/route/moduleRoute.js
 const moduleController = require('../controller/moduleController');
 
 // Exporte la fonction anonyme

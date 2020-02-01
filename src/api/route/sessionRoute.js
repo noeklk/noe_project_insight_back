@@ -1,4 +1,3 @@
-// src/api/routes/sessionRoute.js
 const sessionController = require('../controller/sessionController');
 
 // Exporte la fonction anonyme
