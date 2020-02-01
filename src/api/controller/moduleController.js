@@ -43,10 +43,10 @@ exports.CreateAModuleOnSessionId = (req, res) => {
 exports.GetAllModules = (req, res) => {
   try {
     Module.find((error, modules) => {
-      if(error){
+      if (error) {
         res.status(400);
         console.log(error);
-      }else {
+      } else {
         res.status(200);
         res.json(modules);
       }

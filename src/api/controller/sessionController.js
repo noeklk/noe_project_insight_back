@@ -40,7 +40,7 @@ exports.GetAllSessions = (req, res) => {
 }
 
 exports.GetASessionById = (req, res) => {
-  const {id_session} = req.params;
+  const { id_session } = req.params;
 
   try {
     Session.findById(id_session, (error, sessions) => {
