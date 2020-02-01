@@ -7,7 +7,8 @@ module.exports = (app) => {
     .get(sessionController.GetAllSessions)
     .post(sessionController.CreateASession);
 
-  app.route('/sessions/:session_id')
+  app.route('/sessions/:id_session')
+    .get(sessionController.GetASessionById)
     .put(sessionController.UpdateASessionById)
     .delete(sessionController.DeleteASessionById);
 }

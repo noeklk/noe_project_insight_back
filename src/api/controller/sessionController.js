@@ -6,7 +6,7 @@ exports.CreateASession = (req, res) => {
 
   try {
     new_session.save((error, session) => {
-      
+
       if (error) {
         res.status(400);
         console.log(error);
@@ -39,9 +39,32 @@ exports.GetAllSessions = (req, res) => {
   })
 }
 
-exports.UpdateASessionById = (req, res) => {
+exports.GetASessionById = (req, res) => {
+  const {id_session} = req.params;
+
   try {
-    Session.findByIdAndUpdate(req.params.session_id, req.body, { new: true }, (error, session) => {
+    Session.findById(id_session, (error, sessions) => {
+      if (error) {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `l'id de session: ${id_session} est introuvable` });
+      } else {
+        res.status(200);
+        res.json(sessions);
+      }
+    })
+  }
+  catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: 'erreur serveur' });
+  }
+}
+
+exports.UpdateASessionById = (req, res) => {
+
+  try {
+    Session.findByIdAndUpdate(req.params.id_session, req.body, { new: true }, (error, session) => {
 
       if (error) {
         res.status(400);
@@ -62,7 +85,7 @@ exports.UpdateASessionById = (req, res) => {
 
 exports.DeleteASessionById = (req, res) => {
   try {
-    Session.findByIdAndRemove(req.params.session_id, (error) => {
+    Session.findByIdAndRemove(req.params.id_session, (error) => {
 
       if (error) {
         res.status(400);
