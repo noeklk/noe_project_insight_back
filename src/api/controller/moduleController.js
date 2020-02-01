@@ -74,7 +74,7 @@ exports.GetAllModulesBySessionId = (req, res) => {
   }
 }
 
-exports.GetAModule = (req, res) => {
+exports.GetAModuleById = (req, res) => {
   try {
     Module.findById(req.params.id_module, (error, module) => {
 
@@ -96,7 +96,7 @@ exports.GetAModule = (req, res) => {
   }
 }
 
-exports.UpdateAModule = (req, res) => {
+exports.UpdateAModuleById = (req, res) => {
   try {
     Module.findByIdAndUpdate(req.params.id_module, req.body, { new: true }, (error, module) => {
 
@@ -116,7 +116,7 @@ exports.UpdateAModule = (req, res) => {
     res.json({ message: "Erreur serveur" })
   }
 }
-exports.DeleteAModule = (req, res) => {
+exports.DeleteAModuleById = (req, res) => {
   const { id_module } = req.params;
 
   try {
