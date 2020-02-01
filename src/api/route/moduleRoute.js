@@ -11,4 +11,7 @@ module.exports = (app) => {
     .get(moduleController.GetAModuleById)
     .put(moduleController.UpdateAModuleById)
     .delete(moduleController.DeleteAModuleById);
+
+  app.route('/modules')
+    .get(moduleController.GetAllModules);
 }

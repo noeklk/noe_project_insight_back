@@ -24,7 +24,7 @@ exports.CreateASession = (req, res) => {
   }
 }
 
-exports.GetAllSessionsById = (req, res) => {
+exports.GetAllSessions = (req, res) => {
   Session.find({}, (error, sessions) => {
 
     if (error) {
