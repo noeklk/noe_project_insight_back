@@ -2,7 +2,7 @@
 const Module = require('../model/moduleModel');
 const Session = require('../model/sessionModel');
 
-exports.CreateAModule = (req, res) => {
+exports.CreateAModuleOnSessionId = (req, res) => {
   const new_module = new Module(req.body);
   const { id_session } = req.params;
   new_module.id_session = req.params.id_session;
@@ -40,10 +40,29 @@ exports.CreateAModule = (req, res) => {
   }
 }
 
+exports.GetAllModules = (req, res) => {
+  try {
+    Module.find((error, modules) => {
+      if (error) {
+        res.status(400);
+        console.log(error);
+      } else {
+        res.status(200);
+        res.json(modules);
+      }
+    })
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: "Erreur serveur" })
+  }
+}
+
 exports.GetAllModulesBySessionId = (req, res) => {
   const { id_session } = req.params;
 
   try {
+    // Vérificationn si l'id de la session fourni en paramètre existe
     Session.findById(id_session, (error, session) => {
 
       if (session) {
