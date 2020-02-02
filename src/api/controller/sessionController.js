@@ -25,7 +25,7 @@ exports.CreateASession = (req, res) => {
 
 exports.GetAllSessions = (req, res) => {
   try {
-    Session.find({}, (error, sessions) => {
+    Session.find((error, sessions) => {
       if (sessions) {
         res.status(200);
         res.json(sessions);
@@ -85,14 +85,15 @@ exports.UpdateASessionById = (req, res) => {
 
 exports.DeleteASessionById = (req, res) => {
   const { id_session } = req.params;
+
   try {
     Session.findByIdAndRemove(id_session, (error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json({ message: `La session avec l'id: ${id_session} a été correctement supprimé` });
       } else {
         res.status(400);
-        if(error) console.log(error);
+        console.log(error);
         res.json({ message: `L'id de session: ${id_session} est introuvable` });
       }
     });

@@ -11,7 +11,6 @@ exports.CreateANoteOnModuleIdAndStudentId = (req, res) => { // ++
     new_note.id_module = id_module;
     new_note.id_etudiant = id_etudiant;
 
-
     try {
         User.find({ _id: id_etudiant, role: 'etudiant' }, (error, users) => {
 
@@ -50,8 +49,7 @@ exports.CreateANoteOnModuleIdAndStudentId = (req, res) => { // ++
     }
 };
 
-
-exports.GetAllNotesByModuleId = (req, res) => {// ++
+exports.GetAllNotesByModuleId = (req, res) => { // ++
     const { id_module } = req.params;
 
     try {
@@ -80,3 +78,43 @@ exports.GetAllNotesByModuleId = (req, res) => {// ++
         res.json({ message: errorMessage });
     }
 };
+
+exports.GetAllNotes = (req, res) => {
+    try {
+        Note.find((error, notes) => {
+            if (!error && notes) {
+                res.status(200);
+                res.json(notes);
+            } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: 'Aucune note existante' });
+            }
+        });
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
+
+exports.DeleteANoteById = (req, res) => {
+    const { id_note } = req.params;
+
+    try {
+        Note.findByIdAndDelete(id_note, (error, notes) => {
+            if (!error && notes) {
+                res.status(200);
+                res.json({ message: `La note avec l'id: ${id_note} a été correctement supprimé` });
+            } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: `L'id de note: ${id_note} est introuvable` });
+            }
+        })
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}

@@ -110,7 +110,7 @@ exports.GetAModuleById = (req, res) => {
         res.json(modules);
       } else {
         res.status(400);
-        if (error) console.log(error);
+        console.log(error);
         res.json({ message: `Aucun module portant pour id: ${id_module} trouvé` });
       }
     });
