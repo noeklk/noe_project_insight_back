@@ -176,6 +176,29 @@ exports.UpdateAModuleById = (req, res) => {
   }
 };
 
+exports.UpdateAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
+  const { id_intervenant } = req.params;
+  const { id_session } = req.params;
+  const { id_module } = req.params;
+
+  try {
+    Module.findOneAndUpdate({ _id: id_module, id_intervenant, id_session }, req.body, { new: true }, (error, modules) => {
+      if (!error && modules) {
+        res.status(200);
+        res.json(modules);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `Le module avec l'id: ${id_module}, l'id d'intervenant: ${id_intervenant} et l'id session: ${id_session} n'existe pas` });
+      }
+    });
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+}
+
 exports.DeleteAModuleById = (req, res) => {
   const { id_module } = req.params;
 

@@ -173,7 +173,7 @@ exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
 
 
 
-exports.DeleteANoteById = (req, res) => { // ++
+exports.DeleteANoteById = (req, res) => {
     const { id_note } = req.params;
 
     try {
