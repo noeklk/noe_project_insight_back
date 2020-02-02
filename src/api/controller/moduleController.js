@@ -110,6 +110,51 @@ exports.GetAModuleById = (req, res) => {
   }
 };
 
+exports.GetAllModulesByContributorIdAndSessionId = (req, res) => {
+  const { id_intervenant } = req.params;
+  const { id_session } = req.params;
+
+  try {
+    Module.find({ id_intervenant, id_session }, (error, modules) => {
+      if (!error && modules) {
+        res.status(200);
+        res.json(modules);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `Aucun module portant pour id intervenant: ${id_intervenant} et id session: ${id_session} trouvé` });
+      }
+    })
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+}
+
+exports.GetAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
+  const { id_intervenant } = req.params;
+  const { id_session } = req.params;
+  const { id_module } = req.params;
+
+  try {
+    Module.find({ _id: id_module, id_intervenant, id_session }, (error, modules) => {
+      if (!error && modules) {
+        res.status(200);
+        res.json(modules);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `Aucun module portant pour id: ${id_module}, id session: ${id_session} et id intervenant: ${id_intervenant} trouvé` });
+      }
+    })
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+}
+
 exports.UpdateAModuleById = (req, res) => {
   const { id_module } = req.params;
 

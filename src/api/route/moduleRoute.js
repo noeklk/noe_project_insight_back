@@ -14,5 +14,9 @@ module.exports = (app) => {
     .get(moduleController.GetAllModulesBySessionId);
 
   app.route('/intervenant/:id_intervenant/sessions/:id_session/modules')
-    .post(moduleController.CreateAModuleBySessionIdAndContributorId);
+    .post(moduleController.CreateAModuleBySessionIdAndContributorId)
+    .get(moduleController.GetAllModulesByContributorIdAndSessionId);
+
+  app.route('/intervenant/:id_intervenant/sessions/:id_session/modules/:id_module')
+    .get(moduleController.GetAModuleByContributorIdAndSessionIdAndModuleId);
 };

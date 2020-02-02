@@ -4,7 +4,7 @@ const User = require('../model/userModel');
 
 const errorMessage = 'Erreur Serveur';
 
-exports.CreateANoteByStudentIdAndModuleId = (req, res) => { // ++
+exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
     let new_note = new Note(req.body);
     const { id_module } = req.params;
     const { id_etudiant } = req.params;
@@ -44,7 +44,7 @@ exports.CreateANoteByStudentIdAndModuleId = (req, res) => { // ++
     }
 };
 
-exports.GetAllNotes = (req, res) => { // ++
+exports.GetAllNotes = (req, res) => {
     try {
         Note.find((error, notes) => {
             if (!error && notes) {
@@ -84,7 +84,7 @@ exports.GetANoteById = (req, res) => {
     }
 }
 
-exports.GetAllNotesByModuleId = (req, res) => { // ++
+exports.GetAllNotesByModuleId = (req, res) => {
     const { id_module } = req.params;
 
     try {
@@ -105,7 +105,7 @@ exports.GetAllNotesByModuleId = (req, res) => { // ++
     }
 };
 
-exports.GetAllNotesByModuleIdAndStudentId = (req, res) => { // ++
+exports.GetAllNotesByModuleIdAndStudentId = (req, res) => {
     const { id_module } = req.params;
     const { id_etudiant } = req.params;
 
@@ -127,7 +127,7 @@ exports.GetAllNotesByModuleIdAndStudentId = (req, res) => { // ++
     }
 }
 
-exports.UpdateANoteById = (req, res) => { // ++
+exports.UpdateANoteById = (req, res) => {
     const { id_note } = req.params;
 
     try {
@@ -148,7 +148,7 @@ exports.UpdateANoteById = (req, res) => { // ++
     }
 }
 
-exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = (req, res) => { // ++
+exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
     const { id_etudiant } = req.params;
     const { id_module } = req.params;
     const { id_note } = req.params;
