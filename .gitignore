@@ -13,3 +13,6 @@ package-lock.json
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+
+### mongo ###
+mongo/data/*

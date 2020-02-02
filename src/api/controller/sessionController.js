@@ -13,7 +13,7 @@ exports.CreateASession = (req, res) => {
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: 'Il manque des infos' });
+        res.json({ message: 'Il manque des infos', details: error });
       }
     });
   } catch (e) {

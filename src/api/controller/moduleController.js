@@ -1,9 +1,10 @@
 const Module = require('../model/moduleModel');
 const Session = require('../model/sessionModel');
 const User = require('../model/userModel');
+
 const errorMessage = 'Erreur Serveur';
 
-exports.CreateAModuleOnSessionIdAndContributorId = (req, res) => {
+exports.CreateAModuleOnSessionIdAndContributorId = async (req, res) => {
   let new_module = new Module(req.body);
   const { id_session } = req.params;
   const { id_intervenant } = req.params;
@@ -11,15 +12,14 @@ exports.CreateAModuleOnSessionIdAndContributorId = (req, res) => {
   new_module.id_intervenant = id_intervenant;
 
   try {
-    User.find( {_id: id_intervenant, role: 'intervenant'} , (error, intervenants) => {
-      if (intervenants) {
+    User.find({ _id: id_intervenant, role: 'intervenant' }, (error, intervenants) => {
+      if (intervenants.length) {
         console.log(`id_intervenant: ${id_intervenant} existe, check de la session`);
 
         Session.findById(id_session, (error, sessions) => {
-          if (sessions) {
-
+          if (!error && sessions) {
             new_module.save((error, modules) => {
-              if (modules) {
+              if (!error && modules) {
                 res.status(201);
                 res.json(modules);
               } else {
@@ -38,7 +38,7 @@ exports.CreateAModuleOnSessionIdAndContributorId = (req, res) => {
         res.status(400);
         console.log(error);
 
-        res.json({ message: `L'id intervenant: ${id_intervenant} n'existe pas`})
+        res.json({ message: `L'id intervenant: ${id_intervenant} n'existe pas` })
       }
     });
   } catch (e) {
@@ -51,7 +51,7 @@ exports.CreateAModuleOnSessionIdAndContributorId = (req, res) => {
 exports.GetAllModules = (req, res) => {
   try {
     Module.find((error, modules) => {
-      if (modules) {
+      if (!error && modules) {
         res.status(200);
         res.json(modules);
       } else {
@@ -73,11 +73,11 @@ exports.GetAllModulesBySessionId = (req, res) => {
   try {
     // Vérificationn si l'id de la session fourni en paramètre existe
     Session.findById(id_session, (error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         console.log(`id_session : ${id_session} existe, listing des modules correspondant`);
 
         Module.find({ id_session }, (error, modules) => {
-          if (modules) {
+          if (modules.length) {
             res.status(200);
             res.json(modules);
 
@@ -105,12 +105,12 @@ exports.GetAModuleById = (req, res) => {
 
   try {
     Module.findById(id_module, (error, modules) => {
-      if (modules) {
+      if (!error && modules) {
         res.status(200);
         res.json(modules);
       } else {
         res.status(400);
-        console.log(error);
+        if (error) console.log(error);
         res.json({ message: `Aucun module portant pour id: ${id_module} trouvé` });
       }
     });
@@ -124,7 +124,7 @@ exports.GetAModuleById = (req, res) => {
 exports.UpdateAModuleById = (req, res) => {
   try {
     Module.findByIdAndUpdate(req.params.id_module, req.body, { new: true }, (error, modules) => {
-      if (modules) {
+      if (!error && modules) {
         res.status(400);
         console.log(error);
         res.json({ message: 'Id introuvable' });
@@ -145,7 +145,7 @@ exports.DeleteAModuleById = (req, res) => {
 
   try {
     Module.findByIdAndRemove(id_module, (error, modules) => {
-      if (modules) {
+      if (!error && modules) {
         res.status(200);
         res.json({ message: `Le module avec l'id: ${id_module} a été correctement supprimé` });
 
