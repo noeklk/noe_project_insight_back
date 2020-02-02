@@ -4,7 +4,7 @@ const User = require('../model/userModel');
 
 const errorMessage = 'Erreur Serveur';
 
-exports.CreateAModuleOnSessionIdAndContributorId = async (req, res) => {
+exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
   let new_module = new Module(req.body);
   const { id_session } = req.params;
   const { id_intervenant } = req.params;
@@ -37,7 +37,6 @@ exports.CreateAModuleOnSessionIdAndContributorId = async (req, res) => {
       } else {
         res.status(400);
         console.log(error);
-
         res.json({ message: `L'id intervenant: ${id_intervenant} n'existe pas` })
       }
     });
@@ -71,26 +70,16 @@ exports.GetAllModulesBySessionId = (req, res) => {
   const { id_session } = req.params;
 
   try {
-    // Vérificationn si l'id de la session fourni en paramètre existe
-    Session.findById(id_session, (error, sessions) => {
-      if (!error && sessions) {
-        console.log(`id_session : ${id_session} existe, listing des modules correspondant`);
 
-        Module.find({ id_session }, (error, modules) => {
-          if (modules.length) {
-            res.status(200);
-            res.json(modules);
+    Module.find({ id_session }, (error, modules) => {
+      if (!error && modules.length) {
+        res.status(200);
+        res.json(modules);
 
-          } else {
-            res.status(400);
-            console.log(error);
-            res.json({ message: `Aucun module portant pour id session: ${id_session} trouvé` });
-          }
-        });
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: `L'id session: ${id_session} n'existe pas` });
+        res.json({ message: `Aucun module portant pour id session: ${id_session} trouvé` });
       }
     });
   } catch (e) {
@@ -122,15 +111,17 @@ exports.GetAModuleById = (req, res) => {
 };
 
 exports.UpdateAModuleById = (req, res) => {
+  const { id_module } = req.params;
+
   try {
-    Module.findByIdAndUpdate(req.params.id_module, req.body, { new: true }, (error, modules) => {
+    Module.findByIdAndUpdate(id_module, req.body, { new: true }, (error, modules) => {
       if (!error && modules) {
-        res.status(400);
-        console.log(error);
-        res.json({ message: 'Id introuvable' });
-      } else {
         res.status(200);
         res.json(modules);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `L'id de module avec l'id: ${id_module} n'existe pas` });
       }
     });
   } catch (e) {
