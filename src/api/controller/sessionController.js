@@ -1,6 +1,7 @@
 const Session = require('../model/sessionModel');
 
-const errorMessage = 'Erreur Serveur';
+const config = require('../../config');
+const {errorMessage} = config;
 
 exports.CreateASession = (req, res) => {
   const new_session = new Session(req.body);

@@ -2,7 +2,8 @@ const Module = require('../model/moduleModel');
 const Session = require('../model/sessionModel');
 const User = require('../model/userModel');
 
-const errorMessage = 'Erreur Serveur';
+const config = require('../../config');
+const {errorMessage} = config;
 
 exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
   let new_module = new Module(req.body);

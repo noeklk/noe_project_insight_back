@@ -18,12 +18,21 @@ const userSchema = new Schema({
     pseudo: {
         type: String,
         required: function () {
-            return `${this.prenom}.${this.nom}`;
-        }
+            if (this.pseudo === '' || this.pseudo === undefined) {
+                this.pseudo = `${this.prenom}.${this.nom}`;
+            }
+        },
+        unique: true
     },
     password: {
         type: String,
-        required: 'Le mot de passe est un champ obligatoire'
+        required:  function () {
+            if (this.role === 'intervenant') {
+                this.password = undefined;
+            } else {
+                return 'Le mot de passe est un champ obligatoire';
+            }
+        }
     },
     created_at: {
         type: Date,

@@ -2,7 +2,9 @@ const Note = require('../model/noteModel');
 const Module = require('../model/moduleModel');
 const User = require('../model/userModel');
 
-const errorMessage = 'Erreur Serveur';
+const config = require('../../config');
+const {errorMessage} = config;
+
 
 exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
     let new_note = new Note(req.body);

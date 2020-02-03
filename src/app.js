@@ -12,6 +12,10 @@ const port = 3000;
 // protocole://service/nom_bdd
 mongoose.connect('mongodb://mongo/' + process.env.DB_NAME, {useNewUrlParser: true, useUnifiedTopology:true});
 
+// Configuration mongoose
+mongoose.set('useCreateIndex', true);
+
+// Permet l'envoi d'objet js en json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -19,11 +23,11 @@ app.use(bodyParser.json());
 const noteRoute = require('./api/route/noteRoute');
 const moduleRoute = require('./api/route/moduleRoute');
 const sessionRoute = require('./api/route/sessionRoute');
-//const userRoute = require('./api/route/userRoute');
+const userRoute = require('./api/route/userRoute');
 // Utilise la fonction anonyme contenu dans la constante
 noteRoute(app);
 moduleRoute(app);
 sessionRoute(app);
-//userRoute(app);
+userRoute(app);
 
 app.listen(port, hostname);
