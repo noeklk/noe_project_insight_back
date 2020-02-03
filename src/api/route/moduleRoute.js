@@ -13,8 +13,8 @@ module.exports = (app) => {
   app.route('/sessions/:id_session/modules')
     .get(moduleController.GetAllModulesBySessionId);
 
-  // app.route('/intervenants/:id_intervenant/modules') A FAIRE
-  //   .get(moduleController.GetAllModulesByContributorId);
+  app.route('/intervenants/:id_intervenant/modules')
+    .get(moduleController.GetAllModulesByContributorId);
 
   app.route('/intervenants/:id_intervenant/sessions/:id_session/modules')
     .post(moduleController.CreateAModuleBySessionIdAndContributorId)

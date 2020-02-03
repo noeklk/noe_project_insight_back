@@ -89,6 +89,29 @@ exports.GetAllModulesBySessionId = (req, res) => {
   }
 };
 
+exports.GetAllModulesByContributorId = (req, res) => {
+  const { id_intervenant } = req.params;
+
+  try {
+
+    Module.find({ id_intervenant }, (error, modules) => {
+      if (!error && modules.length) {
+        res.status(200);
+        res.json(modules);
+
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `Aucun module portant pour id intervenant: ${id_intervenant} trouvé` });
+      }
+    });
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+};
+
 exports.GetAModuleById = (req, res) => {
   const { id_module } = req.params;
 
