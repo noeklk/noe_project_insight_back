@@ -1,4 +1,3 @@
-// src/api/routes/sessionRoute.js
 const sessionController = require('../controller/sessionController');
 
 // Exporte la fonction anonyme
@@ -11,4 +10,4 @@ module.exports = (app) => {
     .get(sessionController.GetASessionById)
     .put(sessionController.UpdateASessionById)
     .delete(sessionController.DeleteASessionById);
-}
+};

@@ -1,105 +1,105 @@
-// src/api/controllers/postController.js
 const Session = require('../model/sessionModel');
+
+const errorMessage = 'Erreur Serveur';
 
 exports.CreateASession = (req, res) => {
   const new_session = new Session(req.body);
 
   try {
-    new_session.save((error, session) => {
-
-      if (error) {
+    new_session.save((error, sessions) => {
+      if (sessions) {
+        res.status(201);
+        res.json(sessions);
+      } else {
         res.status(400);
         console.log(error);
-        res.json({ message: "Il manque des infos" });
+        res.json({ message: 'Il manque des infos', details: error });
       }
-      else {
-        res.status(201);
-        res.json(session)
-      }
-    })
+    });
   } catch (e) {
     res.status(500);
     console.log(e);
-    res.json({ message: "Erreur serveur" })
+    res.json({ message: errorMessage });
   }
-}
+};
 
 exports.GetAllSessions = (req, res) => {
-  Session.find({}, (error, sessions) => {
-
-    if (error) {
-      res.status(500);
-      console.log(error);
-      res.json({ message: "Erreur serveur." })
-    }
-    else {
-      res.status(200);
-      res.json(sessions);
-    }
-  })
-}
+  try {
+    Session.find((error, sessions) => {
+      if (sessions) {
+        res.status(200);
+        res.json(sessions);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: 'Aucune session trouvé' })
+      }
+    });
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+};
 
 exports.GetASessionById = (req, res) => {
   const { id_session } = req.params;
 
   try {
     Session.findById(id_session, (error, sessions) => {
-      if (error) {
-        res.status(400);
-        console.log(error);
-        res.json({ message: `l'id de session: ${id_session} est introuvable` });
-      } else {
+      if (sessions) {
         res.status(200);
         res.json(sessions);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `L'id de session: ${id_session} est introuvable` });
       }
-    })
-  }
-  catch (e) {
+    });
+  } catch (e) {
     res.status(500);
     console.log(e);
-    res.json({ message: 'erreur serveur' });
+    res.json({ message: errorMessage });
   }
-}
+};
 
 exports.UpdateASessionById = (req, res) => {
-
+  const { id_session } = req.params;
   try {
-    Session.findByIdAndUpdate(req.params.id_session, req.body, { new: true }, (error, session) => {
-
-      if (error) {
+    Session.findByIdAndUpdate(id_session, req.body, { new: true }, (error, sessions) => {
+      if (sessions) {
+        res.status(200);
+        res.json(sessions);
+      } else {
         res.status(400);
         console.log(error);
-        res.json({ message: "Id introuvable" });
+        res.json({ message: `L'id session: ${id_session} est introuvable` })
       }
-      else {
-        res.status(200);
-        res.json(session)
-      }
-    })
+    });
   } catch (e) {
     res.status(500);
     console.log(e);
-    res.json({ message: "Erreur serveur" })
+    res.json({ message: errorMessage });
   }
-}
+};
 
 exports.DeleteASessionById = (req, res) => {
-  try {
-    Session.findByIdAndRemove(req.params.id_session, (error) => {
+  const { id_session } = req.params;
 
-      if (error) {
+  try {
+    Session.findByIdAndRemove(id_session, (error, sessions) => {
+      if (!error && sessions) {
+        res.status(200);
+        res.json({ message: `La session avec l'id: ${id_session} a été correctement supprimé` });
+      } else {
         res.status(400);
         console.log(error);
-        res.json({ message: "Id introuvable" });
+        res.json({ message: `L'id de session: ${id_session} est introuvable` });
       }
-      else {
-        res.status(200);
-        res.json({ message: "Session supprimé" })
-      }
-    })
+    });
   } catch (e) {
     res.status(500);
     console.log(e);
-    res.json({ message: "Erreur serveur" })
+    res.json({ message: errorMessage });
   }
-}
+};
