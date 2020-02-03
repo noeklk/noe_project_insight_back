@@ -105,6 +105,27 @@ exports.GetAllNotesByModuleId = (req, res) => {
     }
 };
 
+exports.GetAllNotesByStudentId = (req, res) => {
+    const { id_etudiant } = req.params;
+
+    try {
+        Note.find({ id_etudiant }, (error, notes) => {
+            if (!error && notes.length) {
+                res.status(200);
+                res.json(notes);
+            } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: `Aucune note portant pour id etudiant: ${id_etudiant} trouvée` });
+            }
+        });
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+};
+
 exports.GetAllNotesByModuleIdAndStudentId = (req, res) => {
     const { id_module } = req.params;
     const { id_etudiant } = req.params;

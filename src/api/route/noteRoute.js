@@ -13,8 +13,8 @@ module.exports = (app) => {
   app.route('/modules/:id_module/notes')
     .get(noteController.GetAllNotesByModuleId);
 
-  // app.route('/etudiants/:id_etudiant/notes') A FAIRE
-  //   .get(noteController.GetAllNotesByStudentId);
+  app.route('/etudiants/:id_etudiant/notes')
+    .get(noteController.GetAllNotesByStudentId);
 
   app.route('/etudiants/:id_etudiant/modules/:id_module/notes')
     .post(noteController.CreateANoteByStudentIdAndModuleId)
