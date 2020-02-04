@@ -30,13 +30,14 @@ exports.UserRegister = (req, res) => {
 exports.UserLogin = (req, res) => {
     const { pseudo } = req.body;
     const { password } = req.body;
+    const { ADMIN_JWT_KEY } = process.env;
+    const { GUEST_JWT_KEY } = process.env;
 
     try {
-
-        User.find({ pseudo, password }, (error, user) => {
-            if (!error & user.length) {
-                jwt.sign({ pseudo }, process.env.JWT_KEY, { expiresIn: '10m' }, (error, token) => {
-
+        User.find({ pseudo, password }, (error, users) => {
+            if (!error & users.length) {
+                let jwtKey = users[0].role === 'admin' ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+                jwt.sign({ pseudo }, jwtKey, { expiresIn: '10m' }, (error, token) => {
                     if (!error) {
                         res.status(200);
                         res.cookie('accessToken', token, { maxAge: 600000, httpOnly: true });
@@ -54,6 +55,8 @@ exports.UserLogin = (req, res) => {
                 res.json({ message: `L'utilisateur avec le pseudo: '${pseudo}' n'existe pas ou le mot de passe est incorrecte` });
             }
         });
+
+
     } catch (e) {
         res.status(500);
         console.log(e);
@@ -65,7 +68,6 @@ exports.UpdateAUserById = (req, res) => {
     const { id_user } = req.params;
 
     try {
-
         User.findOneAndUpdate(id_user, req.body, { new: true }, (error, users) => {
             if (!error && users) {
                 res.status(200);
@@ -75,7 +77,7 @@ exports.UpdateAUserById = (req, res) => {
             else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: `L'utilisateur avec l'id: '${id_user}' n'existe pas` });
+                res.json({ message: errorMessage });
             }
         });
     } catch (e) {

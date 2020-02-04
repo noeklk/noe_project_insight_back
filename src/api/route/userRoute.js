@@ -8,7 +8,7 @@ module.exports = (app) => {
 
     app.route('/users/:id_user')
         // .get(userController.GetAUserById)
-        .put(jwtMiddleware.VerifyToken, userController.UpdateAUserById)
+        .put(jwtMiddleware.VerifyAdminToken, userController.UpdateAUserById)
     // .delete(userController.DeleteAUserById);
 
     // app.route('/users/:role')
