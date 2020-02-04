@@ -2,9 +2,8 @@ const userController = require('../controller/userController');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 
 module.exports = (app) => {
-    // app.route('/users')
-    // .post(userController.CreateAUser)
-    //     .get(jwtMiddleware.VerifyToken, userController.GetAllUsers);
+    app.route('/users')
+        .get(jwtMiddleware.VerifyAdminToken, userController.GetAllUsers);
 
     app.route('/users/:id_user')
         // .get(userController.GetAUserById)

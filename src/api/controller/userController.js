@@ -4,14 +4,34 @@ const User = require('../model/userModel');
 const config = require('../../config');
 const { errorMessage } = config;
 
+exports.GetAllUsers = (req, res) => {
+    try {
+        User.find((error, users) => {
+            if (!error && users) {
+                res.status(200);
+                res.json(users);
+            }
+            else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: 'Aucun utilisateur trouvé' });
+            }
+        })
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
+
 exports.UserRegister = (req, res) => {
     let new_user = new User(req.body);
 
     try {
-        new_user.save((error, user) => {
+        new_user.save((error, users) => {
             if (!error) {
                 res.status(201);
-                res.json(user);
+                res.json(users);
             }
             else {
                 res.status(400);

@@ -14,7 +14,7 @@ exports.VerifyAdminToken = (req, res, next) => {
                 }
                 else {
                     res.status(403);
-                    res.json({ message: 'Vous n\'avez pas les autorisations pour éxécuter cet action' });
+                    res.json({ message: 'Vous n\'avez pas les autorisations pour exécuter cette action' });
                 }
             })
         }
