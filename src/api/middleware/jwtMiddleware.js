@@ -1,21 +1,29 @@
 const jwt = require('jsonwebtoken');
 
-exports.VerifyToken = (req, res, next) => {
-    let token = req.headers.authorization;
+const config = require('../../config');
+const { errorMessage } = config;
 
-    if (token) {
-        jwt.verify(token, process.env.JWT_KEY, (error, result) => {
-            if (!error && result) {
-                next();
-            }
-            else {
-                res.status(403);
-                res.json({ message: 'Accès refusé' })
-            }
-        })
-    }
-    else {
-        res.status(403);
-        res.json({ message: 'Accès refusé' })
+exports.VerifyToken = (req, res, next) => {
+    let { accessToken } = req.cookies;
+
+    try {
+        if (accessToken) {
+            jwt.verify(accessToken, process.env.JWT_KEY, (error, result) => {
+                if (!error && result) {
+                    next();
+                }
+                else {
+                    res.status(403);
+                    res.json({ message: errorMessage })
+                }
+            })
+        }
+        else {
+            res.status(403);
+            res.json({ message: errorMessage })
+        }
+    } catch (e) {
+        res.status(500);
+        res.json({ message: errorMessage })
     }
 }

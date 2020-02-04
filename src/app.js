@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 // Configuration réseau
 const app = express();
@@ -10,7 +11,7 @@ const port = 3000;
 
 // Connexion BDD
 // protocole://service/nom_bdd
-mongoose.connect('mongodb://mongo/' + process.env.DB_NAME, {useNewUrlParser: true, useUnifiedTopology:true});
+mongoose.connect('mongodb://mongo/' + process.env.DB_NAME, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Configuration mongoose
 mongoose.set('useCreateIndex', true);
@@ -18,6 +19,7 @@ mongoose.set('useCreateIndex', true);
 // Permet l'envoi d'objet js en json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Importe la fonction anonyme dans la constante
 const noteRoute = require('./api/route/noteRoute');

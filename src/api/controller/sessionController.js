@@ -1,7 +1,7 @@
 const Session = require('../model/sessionModel');
 
 const config = require('../../config');
-const {errorMessage} = config;
+const { errorMessage } = config;
 
 exports.CreateASession = (req, res) => {
   const new_session = new Session(req.body);
@@ -66,9 +66,10 @@ exports.GetASessionById = (req, res) => {
 
 exports.UpdateASessionById = (req, res) => {
   const { id_session } = req.params;
+
   try {
     Session.findByIdAndUpdate(id_session, req.body, { new: true }, (error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json(sessions);
       } else {

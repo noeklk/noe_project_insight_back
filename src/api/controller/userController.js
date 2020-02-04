@@ -27,7 +27,6 @@ exports.UserRegister = (req, res) => {
     }
 }
 
-
 exports.UserLogin = (req, res) => {
     const { pseudo } = req.body;
     const { password } = req.body;
@@ -40,7 +39,7 @@ exports.UserLogin = (req, res) => {
 
                     if (!error) {
                         res.status(200);
-                        console.log(res);
+                        res.cookie('accessToken', token, { maxAge: 600000, httpOnly: true });
                         res.json({ token });
                     }
                     else {
@@ -53,6 +52,30 @@ exports.UserLogin = (req, res) => {
                 res.status(400);
                 console.log(error);
                 res.json({ message: `L'utilisateur avec le pseudo: '${pseudo}' n'existe pas ou le mot de passe est incorrecte` });
+            }
+        });
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
+
+exports.UpdateAUserById = (req, res) => {
+    const { id_user } = req.params;
+
+    try {
+
+        User.findOneAndUpdate(id_user, req.body, { new: true }, (error, users) => {
+            if (!error && users) {
+                res.status(200);
+                console.log(res);
+                res.json(users);
+            }
+            else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: `L'utilisateur avec l'id: '${id_user}' n'existe pas` });
             }
         });
     } catch (e) {
