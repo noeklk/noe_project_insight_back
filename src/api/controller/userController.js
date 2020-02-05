@@ -24,6 +24,27 @@ exports.GetAllUsers = (req, res) => {
     }
 }
 
+exports.GetAUserById = (req, res) => {
+    const { id_user } = req.params;
+
+    try {
+        User.findById(id_user, (error, users) => {
+            if (!error && users) {
+                res.status(200);
+                res.json(users);
+            } else {
+                res.status(400);
+                res.json({ message: `L'id de user: ${id_user} est introuvable` });
+            }
+        })
+
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
+
 exports.UserRegister = (req, res) => {
     let new_user = new User(req.body);
 
@@ -98,6 +119,27 @@ exports.UpdateAUserById = (req, res) => {
                 res.status(400);
                 console.log(error);
                 res.json({ message: errorMessage });
+            }
+        });
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
+
+exports.DeleteAUserById = (req, res) => {
+    const { id_user } = req.params;
+
+    try {
+        User.findByIdAndDelete(id_user, (error, users) => {
+            if (!error && users) {
+                res.status(200);
+                res.json({ message: `La session avec l'id: ${id_user} a été correctement supprimé` });
+            } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: `L'id de session: ${id_user} est introuvable` });
             }
         });
     } catch (e) {

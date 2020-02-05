@@ -6,9 +6,9 @@ module.exports = (app) => {
         .get(jwtMiddleware.VerifyAdminToken, userController.GetAllUsers);
 
     app.route('/users/:id_user')
-        // .get(userController.GetAUserById)
+        .get(userController.GetAUserById)
         .put(jwtMiddleware.VerifyAdminToken, userController.UpdateAUserById)
-    // .delete(userController.DeleteAUserById);
+        .delete(userController.DeleteAUserById);
 
     // app.route('/users/:role')
     // .get(userController.GetUsersByRole);
