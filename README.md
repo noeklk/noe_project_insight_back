@@ -7,8 +7,7 @@
 This API allows :
 + students to rate their teacher's modules 
 + administrators to create, read, update and delete sessions or modules or users. They can see the average sessions scores too.
-+ contributors to 
-
++ contributors to read their students notes given on their modules.
 
 ## URL
 ```
