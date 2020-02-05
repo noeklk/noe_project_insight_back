@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const config = require('../../config');
+const config = require("../../config");
 const { errorMessage } = config;
 
 exports.VerifyAdminToken = (req, res, next) => {
@@ -14,7 +14,7 @@ exports.VerifyAdminToken = (req, res, next) => {
                 }
                 else {
                     res.status(403);
-                    res.json({ message: 'Vous n\'avez pas les autorisations pour exécuter cette action' });
+                    res.json({ message: "Vous n'avez pas les autorisations pour exécuter cette action" });
                 }
             })
         }

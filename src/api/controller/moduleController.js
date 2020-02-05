@@ -1,8 +1,8 @@
-const Module = require('../model/moduleModel');
-const Session = require('../model/sessionModel');
-const User = require('../model/userModel');
+const Module = require("../model/moduleModel");
+const Session = require("../model/sessionModel");
+const User = require("../model/userModel");
 
-const config = require('../../config');
+const config = require("../../config");
 const {errorMessage} = config;
 
 exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
@@ -13,7 +13,7 @@ exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
   new_module.id_intervenant = id_intervenant;
 
   try {
-    User.find({ _id: id_intervenant, role: 'intervenant' }, (error, intervenants) => {
+    User.find({ _id: id_intervenant, role: "intervenant" }, (error, intervenants) => {
       if (intervenants.length) {
         console.log(`id_intervenant: ${id_intervenant} existe, check de la session`);
 
@@ -26,7 +26,7 @@ exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
               } else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: 'Il manque des informations' });
+                res.json({ message: "Il manque des informations" });
               }
             });
           } else {
@@ -57,7 +57,7 @@ exports.GetAllModules = (req, res) => {
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: 'Aucun module trouvé' });
+        res.json({ message: "Aucun module trouvé" });
       }
     });
   } catch (e) {

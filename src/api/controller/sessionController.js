@@ -1,6 +1,6 @@
-const Session = require('../model/sessionModel');
+const Session = require("../model/sessionModel");
 
-const config = require('../../config');
+const config = require("../../config");
 const { errorMessage } = config;
 
 exports.CreateASession = (req, res) => {
@@ -14,7 +14,7 @@ exports.CreateASession = (req, res) => {
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: 'Il manque des infos', details: error });
+        res.json({ message: "Il manque des infos", details: error });
       }
     });
   } catch (e) {
@@ -33,7 +33,7 @@ exports.GetAllSessions = (req, res) => {
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: 'Aucune session trouvé' })
+        res.json({ message: "Aucune session trouvé" })
       }
     });
   } catch (e) {

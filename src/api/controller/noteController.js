@@ -1,8 +1,8 @@
-const Note = require('../model/noteModel');
-const Module = require('../model/moduleModel');
-const User = require('../model/userModel');
+const Note = require("../model/noteModel");
+const Module = require("../model/moduleModel");
+const User = require("../model/userModel");
 
-const config = require('../../config');
+const config = require("../../config");
 const {errorMessage} = config;
 
 
@@ -14,7 +14,7 @@ exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
     new_note.id_etudiant = id_etudiant;
 
     try {
-        User.find({ _id: id_etudiant, role: 'etudiant' }, (error, users) => {
+        User.find({ _id: id_etudiant, role: "etudiant" }, (error, users) => {
             if (!error && users.length) {
                 Module.findById(id_module, (error, users) => {
                     if (!error && users) {
@@ -25,7 +25,7 @@ exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
                             } else {
                                 res.status(400);
                                 console.log(error);
-                                res.json({ message: 'Il manque des informations' });
+                                res.json({ message: "Il manque des informations" });
                             }
                         });
                     } else {
@@ -55,7 +55,7 @@ exports.GetAllNotes = (req, res) => {
             } else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: 'Aucune note existante' });
+                res.json({ message: "Aucune note existante" });
             }
         });
     } catch (e) {

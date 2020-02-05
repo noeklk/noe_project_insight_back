@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const noteSchema = new Schema({
     note: {
         type: Number,
-        required: 'Il faut une note pour le module'
+        required: "Il faut une note pour le module"
     },
     message: {
         type: String,
-        required: 'Il faut laisser une appréciation pour le module'
+        required: "Il faut laisser une appréciation pour le module"
     },
     id_etudiant: {
         type: String,
-        required: 'La note doit provenir d\'un id étudiant'
+        required: "La note doit provenir d'un id étudiant"
 
     },
     id_module: {
@@ -25,4 +25,4 @@ const noteSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Note', noteSchema, 'notes');
+module.exports = mongoose.model("Note", noteSchema, "notes");

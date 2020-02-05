@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const moduleSchema = new Schema({
@@ -12,15 +12,15 @@ const moduleSchema = new Schema({
     },
     id_session: {
         type: String,
-        required: 'il faut un id à la session'
+        required: "il faut un id à la session"
     },
     date_debut: {
         type: Date,
-        required: 'il faut une date début du module'
+        required: "il faut une date début du module"
     },
     date_fin: {
         type: Date,
-        required: 'il faut une date fin du module'
+        required: "il faut une date fin du module"
     },
     created_at: {
         type: Date,
@@ -28,4 +28,4 @@ const moduleSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Module', moduleSchema, 'modules');
+module.exports = mongoose.model("Module", moduleSchema, "modules");

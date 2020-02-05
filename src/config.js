@@ -1,1 +1,1 @@
-exports.errorMessage = 'Erreur Serveur';
+exports.errorMessage = "Erreur Serveur";

@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const User = require('../model/userModel');
+const jwt = require("jsonwebtoken");
+const User = require("../model/userModel");
 
-const config = require('../../config');
+const config = require("../../config");
 const { errorMessage } = config;
 
 exports.GetAllUsers = (req, res) => {
@@ -14,7 +14,7 @@ exports.GetAllUsers = (req, res) => {
             else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: 'Aucun utilisateur trouvé' });
+                res.json({ message: "Aucun utilisateur trouvé" });
             }
         })
     } catch (e) {
@@ -57,7 +57,7 @@ exports.UserRegister = (req, res) => {
             else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: 'Il manque des infos' });
+                res.json({ message: "Il manque des infos" });
             }
         })
     }
@@ -77,11 +77,11 @@ exports.UserLogin = (req, res) => {
     try {
         User.find({ pseudo, password }, (error, users) => {
             if (!error & users.length) {
-                let jwtKey = users[0].role === 'admin' ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
-                jwt.sign({ pseudo }, jwtKey, { expiresIn: '10m' }, (error, token) => {
+                let jwtKey = users[0].role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+                jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
                     if (!error) {
                         res.status(200);
-                        res.cookie('accessToken', token, { maxAge: 600000, httpOnly: true });
+                        res.cookie("accessToken", token, { maxAge: 600000, httpOnly: true });
                         res.json({ token });
                     }
                     else {
