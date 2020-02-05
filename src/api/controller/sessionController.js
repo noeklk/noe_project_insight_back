@@ -8,7 +8,7 @@ exports.CreateASession = (req, res) => {
 
   try {
     new_session.save((error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(201);
         res.json(sessions);
       } else {
@@ -27,7 +27,7 @@ exports.CreateASession = (req, res) => {
 exports.GetAllSessions = (req, res) => {
   try {
     Session.find((error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json(sessions);
       } else {
@@ -48,7 +48,7 @@ exports.GetASessionById = (req, res) => {
 
   try {
     Session.findById(id_session, (error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json(sessions);
       } else {
@@ -97,6 +97,28 @@ exports.DeleteASessionById = (req, res) => {
         res.status(400);
         console.log(error);
         res.json({ message: `L'id de session: ${id_session} est introuvable` });
+      }
+    });
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+};
+
+exports.GetASessionByYear = (req, res) => {
+  const { annee } = req.params;
+  let dateTime = new Date(annee);
+
+  try {
+    Session.findOne({ annee_promo: dateTime }, (error, sessions) => {
+      if (!error && sessions) {
+        res.status(200);
+        res.json(sessions);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `L'année de session: ${annee} est introuvable` });
       }
     });
   } catch (e) {

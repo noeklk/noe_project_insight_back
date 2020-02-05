@@ -3,7 +3,7 @@ const Session = require("../model/sessionModel");
 const User = require("../model/userModel");
 
 const config = require("../../config");
-const {errorMessage} = config;
+const { errorMessage } = config;
 
 exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
   let new_module = new Module(req.body);
@@ -13,8 +13,8 @@ exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
   new_module.id_intervenant = id_intervenant;
 
   try {
-    User.find({ _id: id_intervenant, role: "intervenant" }, (error, intervenants) => {
-      if (intervenants.length) {
+    User.findOne({ _id: id_intervenant, role: "intervenant" }, (error, intervenants) => {
+      if (!error && intervenants) {
         console.log(`id_intervenant: ${id_intervenant} existe, check de la session`);
 
         Session.findById(id_session, (error, sessions) => {
@@ -51,7 +51,7 @@ exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
 exports.GetAllModules = (req, res) => {
   try {
     Module.find((error, modules) => {
-      if (!error && modules) {
+      if (!error && modules.length) {
         res.status(200);
         res.json(modules);
       } else {
@@ -140,7 +140,7 @@ exports.GetAllModulesByContributorIdAndSessionId = (req, res) => {
 
   try {
     Module.find({ id_intervenant, id_session }, (error, modules) => {
-      if (!error && modules) {
+      if (!error && modules.length) {
         res.status(200);
         res.json(modules);
       } else {
@@ -163,7 +163,7 @@ exports.GetAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
 
   try {
     Module.find({ _id: id_module, id_intervenant, id_session }, (error, modules) => {
-      if (!error && modules) {
+      if (!error && modules.length) {
         res.status(200);
         res.json(modules);
       } else {

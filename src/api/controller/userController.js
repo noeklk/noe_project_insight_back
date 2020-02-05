@@ -50,7 +50,7 @@ exports.UserRegister = (req, res) => {
 
     try {
         new_user.save((error, users) => {
-            if (!error) {
+            if (!error && users) {
                 res.status(201);
                 res.json(users);
             }
@@ -75,11 +75,11 @@ exports.UserLogin = (req, res) => {
     const { GUEST_JWT_KEY } = process.env;
 
     try {
-        User.find({ pseudo, password }, (error, users) => {
-            if (!error & users.length) {
-                let jwtKey = users[0].role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+        User.findOne({ pseudo, password }, (error, users) => {
+            if (!error && users) {
+                let jwtKey = users.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
                 jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
-                    if (!error) {
+                    if (!error && token) {
                         res.status(200);
                         res.cookie("accessToken", token, { maxAge: 600000, httpOnly: true });
                         res.json({ token });

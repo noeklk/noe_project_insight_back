@@ -1,4 +1,5 @@
 const noteController = require("../controller/noteController");
+const jwtMiddleware = require("../middleware/jwtMiddleware");
 
 // Exporte la fonction anonyme
 module.exports = (app) => {
@@ -16,9 +17,13 @@ module.exports = (app) => {
   app.route("/etudiants/:id_etudiant/notes")
     .get(noteController.GetAllNotesByStudentId);
 
+  ////////////////////// ROUTES A UTILISER //////////////////////
+
   app.route("/etudiants/:id_etudiant/modules/:id_module/notes")
-    .post(noteController.CreateANoteByStudentIdAndModuleId)
+    .post(jwtMiddleware.VerifyAdminOrGuestToken, noteController.CreateANoteByStudentIdAndModuleId)
     .get(noteController.GetAllNotesByModuleIdAndStudentId);
+
+  ////////////////////// ROUTES A UTILISER //////////////////////
 
   app.route("/etudiants/:id_etudiant/modules/:id_module/notes/:id_note")
     .put(noteController.UpdateANoteByModuleIdAndStudentIdAndNoteId);

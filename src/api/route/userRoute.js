@@ -3,12 +3,12 @@ const jwtMiddleware = require("../middleware/jwtMiddleware");
 
 module.exports = (app) => {
     app.route("/users")
-        .get(jwtMiddleware.VerifyAdminToken, userController.GetAllUsers);
+        .get(jwtMiddleware.VerifyAdminOrGuestToken, userController.GetAllUsers);
 
     app.route("/users/:id_user")
-        .get(userController.GetAUserById)
+        .get(jwtMiddleware.VerifyAdminOrGuestToken, userController.GetAUserById)
         .put(jwtMiddleware.VerifyAdminToken, userController.UpdateAUserById)
-        .delete(userController.DeleteAUserById);
+        .delete(jwtMiddleware.VerifyAdminToken, userController.DeleteAUserById);
 
     // app.route('/users/:role')
     // .get(userController.GetUsersByRole);

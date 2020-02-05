@@ -14,8 +14,8 @@ exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
     new_note.id_etudiant = id_etudiant;
 
     try {
-        User.find({ _id: id_etudiant, role: "etudiant" }, (error, users) => {
-            if (!error && users.length) {
+        User.findOne({ _id: id_etudiant, role: "etudiant" }, (error, users) => {
+            if (!error && users) {
                 Module.findById(id_module, (error, users) => {
                     if (!error && users) {
                         new_note.save((error, notes) => {
