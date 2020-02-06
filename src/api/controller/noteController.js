@@ -3,10 +3,10 @@ const Module = require("../model/moduleModel");
 const User = require("../model/userModel");
 
 const config = require("../../config");
-const {errorMessage} = config;
+const { errorMessage } = config;
 
 
-exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
+exports.CreateANoteByStudentIdAndModuleId = async (req, res) => {
     let new_note = new Note(req.body);
     const { id_module } = req.params;
     const { id_etudiant } = req.params;
@@ -14,32 +14,32 @@ exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
     new_note.id_etudiant = id_etudiant;
 
     try {
-        User.findOne({ _id: id_etudiant, role: "etudiant" }, (error, users) => {
+        await User.findOne({ _id: id_etudiant }, (error, user) => {
+            if (!user) {
+                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+            } else if (user.role !== "etudiant") {
+                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
+            }
+        });
+
+        Module.findById(id_module, (error, users) => {
             if (!error && users) {
-                Module.findById(id_module, (error, users) => {
-                    if (!error && users) {
-                        new_note.save((error, notes) => {
-                            if (!error && notes) {
-                                res.status(201);
-                                res.json(notes);
-                            } else {
-                                res.status(400);
-                                console.log(error);
-                                res.json({ message: "Il manque des informations" });
-                            }
-                        });
+                new_note.save((error, notes) => {
+                    if (!error && notes) {
+                        res.status(201);
+                        res.json(notes);
                     } else {
                         res.status(400);
                         console.log(error);
-                        res.json({ message: `L'id du module: ${id_module} est introuvable` });
+                        res.json({ message: "Il manque des informations" });
                     }
                 });
             } else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: `L'id de l'etudiant: ${id_etudiant} est introuvable` });
+                res.json({ message: `L'id du module: ${id_module} est introuvable` });
             }
-        })
+        });
     } catch (e) {
         res.status(500);
         res.json({ message: errorMessage })
@@ -107,10 +107,18 @@ exports.GetAllNotesByModuleId = (req, res) => {
     }
 };
 
-exports.GetAllNotesByStudentId = (req, res) => {
+exports.GetAllNotesByStudentId = async (req, res) => {
     const { id_etudiant } = req.params;
 
     try {
+        await User.findOne({ _id: id_etudiant }, (error, user) => {
+            if (!user) {
+                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+            } else if (user.role !== "etudiant") {
+                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
+            }
+        });
+
         Note.find({ id_etudiant }, (error, notes) => {
             if (!error && notes.length) {
                 res.status(200);
@@ -128,11 +136,19 @@ exports.GetAllNotesByStudentId = (req, res) => {
     }
 };
 
-exports.GetAllNotesByModuleIdAndStudentId = (req, res) => {
+exports.GetAllNotesByModuleIdAndStudentId = async (req, res) => {
     const { id_module } = req.params;
     const { id_etudiant } = req.params;
 
     try {
+        await User.findOne({ _id: id_etudiant }, (error, user) => {
+            if (!user) {
+                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+            } else if (user.role !== "etudiant") {
+                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
+            }
+        });
+
         Note.find({ id_module, id_etudiant }, (error, notes) => {
             if (!error && notes.length) {
                 res.status(200);
@@ -171,12 +187,20 @@ exports.UpdateANoteById = (req, res) => {
     }
 }
 
-exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
+exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = async (req, res) => {
     const { id_etudiant } = req.params;
     const { id_module } = req.params;
     const { id_note } = req.params;
 
     try {
+        await User.findOne({ _id: id_etudiant }, (error, user) => {
+            if (!user) {
+                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+            } else if (user.role !== "etudiant") {
+                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
+            }
+        });
+
         Note.findOneAndUpdate({ _id: id_note, id_etudiant, id_module }, req.body, { new: true }, (error, notes) => {
             if (!error && notes) {
                 res.status(200);
@@ -194,7 +218,36 @@ exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
     }
 }
 
+exports.DeleteANoteByModuleIdAndStudentIdAndNoteId = async (req, res) => {
+    const { id_etudiant } = req.params;
+    const { id_module } = req.params;
+    const { id_note } = req.params;
 
+    try {
+        await User.findOne({ _id: id_etudiant }, (error, user) => {
+            if (!user) {
+                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+            } else if (user.role !== "etudiant") {
+                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
+            }
+        });
+
+        Note.findOneAndDelete({ _id: id_note, id_etudiant, id_module }, req.body, { new: true }, (error, notes) => {
+            if (!error && notes) {
+                res.status(200);
+                res.json(notes);
+            } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: `L'id de note: ${id_note} avec l'id etudiant: ${id_etudiant} et l'id module: ${id_module} n'existe pas` });
+            }
+        })
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
 
 exports.DeleteANoteById = (req, res) => {
     const { id_note } = req.params;

@@ -4,7 +4,7 @@ const jwtMiddleware = require("../middleware/jwtMiddleware");
 // Exporte la fonction anonyme
 module.exports = (app) => {
   app.route("/sessions")
-    .get(sessionController.GetAllSessions)
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, sessionController.GetAllSessions)
     .post(jwtMiddleware.VerifyAdminToken, sessionController.CreateASession);
 
   app.route("/sessions/:id_session")
@@ -12,6 +12,6 @@ module.exports = (app) => {
     .put(jwtMiddleware.VerifyAdminToken, sessionController.UpdateASessionById)
     .delete(jwtMiddleware.VerifyAdminToken, sessionController.DeleteASessionById);
 
-    app.route("/session/annee/:annee")
-    .get(sessionController.GetASessionByYear);
+    app.route("/sessions/annee/:annee")
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, sessionController.GetAllSessionsByYear);
 };

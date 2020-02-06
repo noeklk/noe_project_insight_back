@@ -5,7 +5,7 @@ const User = require("../model/userModel");
 const config = require("../../config");
 const { errorMessage } = config;
 
-exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
+exports.CreateAModuleByContributorIdAndSessionId = async (req, res) => {
   let new_module = new Module(req.body);
   const { id_session } = req.params;
   const { id_intervenant } = req.params;
@@ -13,34 +13,33 @@ exports.CreateAModuleBySessionIdAndContributorId = (req, res) => {
   new_module.id_intervenant = id_intervenant;
 
   try {
-    User.findOne({ _id: id_intervenant, role: "intervenant" }, (error, intervenants) => {
-      if (!error && intervenants) {
-        console.log(`id_intervenant: ${id_intervenant} existe, check de la session`);
+    await User.findOne({ _id: id_intervenant }, (error, intervenant) => {
+      if (!intervenant) {
+        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+      } else if (intervenant.role !== "intervenant") {
+        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
+      }
+    });
 
-        Session.findById(id_session, (error, sessions) => {
-          if (!error && sessions) {
-            new_module.save((error, modules) => {
-              if (!error && modules) {
-                res.status(201);
-                res.json(modules);
-              } else {
-                res.status(400);
-                console.log(error);
-                res.json({ message: "Il manque des informations" });
-              }
-            });
+    Session.findById(id_session, (error, sessions) => {
+      if (!error && sessions) {
+        new_module.save((error, modules) => {
+          if (!error && modules) {
+            res.status(201);
+            res.json(modules);
           } else {
             res.status(400);
             console.log(error);
-            res.json({ message: `L'id session: ${id_session} n'existe pas` });
+            res.json({ message: "Il manque des informations" });
           }
         });
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: `L'id intervenant: ${id_intervenant} n'existe pas` })
+        res.json({ message: `L'id session: ${id_session} n'existe pas` });
       }
     });
+
   } catch (e) {
     res.status(500);
     console.log(e);
@@ -90,10 +89,17 @@ exports.GetAllModulesBySessionId = (req, res) => {
   }
 };
 
-exports.GetAllModulesByContributorId = (req, res) => {
+exports.GetAllModulesByContributorId = async (req, res) => {
   const { id_intervenant } = req.params;
 
   try {
+    await User.findOne({ _id: id_intervenant }, (error, user) => {
+      if (!user) {
+        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+      } else if (user.role !== "intervenant") {
+        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
+      }
+    });
 
     Module.find({ id_intervenant }, (error, modules) => {
       if (!error && modules.length) {
@@ -134,11 +140,19 @@ exports.GetAModuleById = (req, res) => {
   }
 };
 
-exports.GetAllModulesByContributorIdAndSessionId = (req, res) => {
+exports.GetAllModulesByContributorIdAndSessionId = async (req, res) => {
   const { id_intervenant } = req.params;
   const { id_session } = req.params;
 
   try {
+    await User.findOne({ _id: id_intervenant }, (error, user) => {
+      if (!user) {
+        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+      } else if (user.role !== "intervenant") {
+        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
+      }
+    });
+
     Module.find({ id_intervenant, id_session }, (error, modules) => {
       if (!error && modules.length) {
         res.status(200);
@@ -156,12 +170,20 @@ exports.GetAllModulesByContributorIdAndSessionId = (req, res) => {
   }
 }
 
-exports.GetAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
+exports.GetAModuleByContributorIdAndSessionIdAndModuleId = async (req, res) => {
   const { id_intervenant } = req.params;
   const { id_session } = req.params;
   const { id_module } = req.params;
 
   try {
+    await User.findOne({ _id: id_intervenant }, (error, user) => {
+      if (!user) {
+        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+      } else if (user.role !== "intervenant") {
+        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
+      }
+    });
+
     Module.find({ _id: id_module, id_intervenant, id_session }, (error, modules) => {
       if (!error && modules.length) {
         res.status(200);
@@ -200,13 +222,52 @@ exports.UpdateAModuleById = (req, res) => {
   }
 };
 
-exports.UpdateAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
+exports.UpdateAModuleByContributorIdAndSessionIdAndModuleId = async (req, res) => {
   const { id_intervenant } = req.params;
   const { id_session } = req.params;
   const { id_module } = req.params;
 
   try {
+    await User.findOne({ _id: id_intervenant }, (error, user) => {
+      if (!user) {
+        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+      } else if (user.role !== "intervenant") {
+        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
+      }
+    });
+
     Module.findOneAndUpdate({ _id: id_module, id_intervenant, id_session }, req.body, { new: true }, (error, modules) => {
+      if (!error && modules) {
+        res.status(200);
+        res.json(modules);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `Le module avec l'id: ${id_module}, l'id d'intervenant: ${id_intervenant} et l'id session: ${id_session} n'existe pas` });
+      }
+    });
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+}
+
+exports.DeleteAModuleByContributorIdAndSessionIdAndModuleId = async (req, res) => {
+  const { id_intervenant } = req.params;
+  const { id_session } = req.params;
+  const { id_module } = req.params;
+
+  try {
+    await User.findOne({ _id: id_intervenant }, (error, user) => {
+      if (!user) {
+        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+      } else if (user.role !== "intervenant") {
+        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
+      }
+    });
+
+    Module.findOneAndDelete({ _id: id_module, id_intervenant, id_session }, req.body, { new: true }, (error, modules) => {
       if (!error && modules) {
         res.status(200);
         res.json(modules);

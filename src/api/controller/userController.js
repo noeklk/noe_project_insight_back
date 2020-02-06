@@ -5,6 +5,27 @@ const User = require("../model/userModel");
 const config = require("../../config");
 const { errorMessage } = config;
 
+exports.CreateAUser = (req, res) => {
+    try {
+        let new_user = new User(req.body);
+
+        new_user.save((error, user) => {
+            if (!error && user) {
+                res.status(201);
+                res.json(user);
+            } else {
+                res.status(400);
+                console.log(error);
+                res.json({ message: `L'utilisateur à l'identifiant: ${new_user.pseudo} existe déjà` });
+            }
+        })
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage })
+    }
+}
+
 exports.GetAllUsers = (req, res) => {
     try {
         User.find((error, users) => {
@@ -62,7 +83,7 @@ exports.UserRegister = async (req, res) => {
             } else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: "Veuillez saisir un identifiant unique" });
+                res.json({ message: `L'utilisateur à l'identifiant: ${new_user.pseudo} existe déjà` });
             }
         });
     }
@@ -80,7 +101,7 @@ exports.UserLogin = async (req, res) => {
         const { ADMIN_JWT_KEY } = process.env;
         const { GUEST_JWT_KEY } = process.env;
 
-        await (await User.findOne({ pseudo }, (error, user) => {
+        await User.findOne({ pseudo }, (error, user) => {
             if (!user) {
                 return res.status(400).json({ message: "L'utilisateur n'existe pas" });
             } else if (!bcrypt.compareSync(password, user.password)) {
@@ -101,7 +122,7 @@ exports.UserLogin = async (req, res) => {
                     res.json({ message: errorMessage });
                 }
             });
-        }));
+        });
     } catch (e) {
         res.status(500);
         console.log(e);

@@ -106,19 +106,19 @@ exports.DeleteASessionById = (req, res) => {
   }
 };
 
-exports.GetASessionByYear = (req, res) => {
+exports.GetAllSessionsByYear = (req, res) => {
   const { annee } = req.params;
   let dateTime = new Date(annee);
 
   try {
-    Session.findOne({ annee_promo: dateTime }, (error, sessions) => {
-      if (!error && sessions) {
+    Session.find({ annee_promo: dateTime }, (error, sessions) => {
+      if (!error && sessions.length) {
         res.status(200);
         res.json(sessions);
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: `L'année de session: ${annee} est introuvable` });
+        res.json({ message: `Aucune session portant pour année: ${annee} n'existe` });
       }
     });
   } catch (e) {
