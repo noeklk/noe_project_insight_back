@@ -1,26 +1,30 @@
-const moduleController = require('../controller/moduleController');
+const moduleController = require("../controller/moduleController");
+const jwtMiddleware = require("../middleware/jwtMiddleware");
 
 // Exporte la fonction anonyme
 module.exports = (app) => {
-  app.route('/modules')
-    .get(moduleController.GetAllModules);
+  app.route("/modules")
+    .get(jwtMiddleware.VerifyAdminToken, moduleController.GetAllModules);
 
-  app.route('/modules/:id_module')
-    .get(moduleController.GetAModuleById)
-    .put(moduleController.UpdateAModuleById)
-    .delete(moduleController.DeleteAModuleById);
+  app.route("/modules/:id_module")
+    .get(jwtMiddleware.VerifyAdminToken, moduleController.GetAModuleById)
+    .put(jwtMiddleware.VerifyAdminToken, moduleController.UpdateAModuleById)
+    .delete(jwtMiddleware.VerifyAdminToken, moduleController.DeleteAModuleById);
 
-  app.route('/sessions/:id_session/modules')
-    .get(moduleController.GetAllModulesBySessionId);
+  app.route("/sessions/:id_session/modules")
+    .get(jwtMiddleware.VerifyAdminToken, moduleController.GetAllModulesBySessionId);
 
-  app.route('/intervenants/:id_intervenant/modules')
-    .get(moduleController.GetAllModulesByContributorId);
+  app.route("/intervenants/:id_intervenant/modules")
+    .get(jwtMiddleware.VerifyAdminToken, moduleController.GetAllModulesByContributorId);
 
-  app.route('/intervenants/:id_intervenant/sessions/:id_session/modules')
-    .post(moduleController.CreateAModuleBySessionIdAndContributorId)
-    .get(moduleController.GetAllModulesByContributorIdAndSessionId);
+  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
+  app.route("/intervenants/:id_intervenant/sessions/:id_session/modules")
+    .post(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.CreateAModuleByContributorIdAndSessionId)
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.GetAllModulesByContributorIdAndSessionId);
 
-  app.route('/intervenants/:id_intervenant/sessions/:id_session/modules/:id_module')
-    .get(moduleController.GetAModuleByContributorIdAndSessionIdAndModuleId)
-    .put(moduleController.UpdateAModuleByContributorIdAndSessionIdAndModuleId)
+  app.route("/intervenants/:id_intervenant/sessions/:id_session/modules/:id_module")
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.GetAModuleByContributorIdAndSessionIdAndModuleId)
+    .put(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.UpdateAModuleByContributorIdAndSessionIdAndModuleId)
+    .delete(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.DeleteAModuleByContributorIdAndSessionIdAndModuleId);
+  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
 };

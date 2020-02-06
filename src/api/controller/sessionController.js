@@ -1,19 +1,20 @@
-const Session = require('../model/sessionModel');
+const Session = require("../model/sessionModel");
 
-const errorMessage = 'Erreur Serveur';
+const config = require("../../config");
+const { errorMessage } = config;
 
 exports.CreateASession = (req, res) => {
   const new_session = new Session(req.body);
 
   try {
     new_session.save((error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(201);
         res.json(sessions);
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: 'Il manque des infos', details: error });
+        res.json({ message: "Il manque des infos", details: error });
       }
     });
   } catch (e) {
@@ -26,13 +27,13 @@ exports.CreateASession = (req, res) => {
 exports.GetAllSessions = (req, res) => {
   try {
     Session.find((error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json(sessions);
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: 'Aucune session trouvé' })
+        res.json({ message: "Aucune session trouvé" })
       }
     });
   } catch (e) {
@@ -47,7 +48,7 @@ exports.GetASessionById = (req, res) => {
 
   try {
     Session.findById(id_session, (error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json(sessions);
       } else {
@@ -65,9 +66,10 @@ exports.GetASessionById = (req, res) => {
 
 exports.UpdateASessionById = (req, res) => {
   const { id_session } = req.params;
+
   try {
     Session.findByIdAndUpdate(id_session, req.body, { new: true }, (error, sessions) => {
-      if (sessions) {
+      if (!error && sessions) {
         res.status(200);
         res.json(sessions);
       } else {
@@ -87,7 +89,7 @@ exports.DeleteASessionById = (req, res) => {
   const { id_session } = req.params;
 
   try {
-    Session.findByIdAndRemove(id_session, (error, sessions) => {
+    Session.findByIdAndDelete(id_session, (error, sessions) => {
       if (!error && sessions) {
         res.status(200);
         res.json({ message: `La session avec l'id: ${id_session} a été correctement supprimé` });
@@ -95,6 +97,28 @@ exports.DeleteASessionById = (req, res) => {
         res.status(400);
         console.log(error);
         res.json({ message: `L'id de session: ${id_session} est introuvable` });
+      }
+    });
+  } catch (e) {
+    res.status(500);
+    console.log(e);
+    res.json({ message: errorMessage });
+  }
+};
+
+exports.GetAllSessionsByYear = (req, res) => {
+  const { annee } = req.params;
+  let dateTime = new Date(annee);
+
+  try {
+    Session.find({ annee_promo: dateTime }, (error, sessions) => {
+      if (!error && sessions.length) {
+        res.status(200);
+        res.json(sessions);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: `Aucune session portant pour année: ${annee} n'existe` });
       }
     });
   } catch (e) {

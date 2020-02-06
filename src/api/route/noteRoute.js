@@ -1,25 +1,30 @@
-const noteController = require('../controller/noteController');
+const noteController = require("../controller/noteController");
+const jwtMiddleware = require("../middleware/jwtMiddleware");
 
 // Exporte la fonction anonyme
 module.exports = (app) => {
-  app.route('/notes/')
-    .get(noteController.GetAllNotes);
+  app.route("/notes/")
+    .get(jwtMiddleware.VerifyAdminToken, noteController.GetAllNotes);
 
-  app.route('/notes/:id_note')
-    .get(noteController.GetANoteById)
-    .put(noteController.UpdateANoteById)
-    .delete(noteController.DeleteANoteById);
+  app.route("/notes/:id_note")
+    .get(jwtMiddleware.VerifyAdminToken, noteController.GetANoteById)
+    .put(jwtMiddleware.VerifyAdminToken, noteController.UpdateANoteById)
+    .delete(jwtMiddleware.VerifyAdminToken, noteController.DeleteANoteById);
 
-  app.route('/modules/:id_module/notes')
-    .get(noteController.GetAllNotesByModuleId);
+  app.route("/modules/:id_module/notes")
+    .get(jwtMiddleware.VerifyAdminToken, noteController.GetAllNotesByModuleId);
 
-  app.route('/etudiants/:id_etudiant/notes')
-    .get(noteController.GetAllNotesByStudentId);
+  app.route("/etudiants/:id_etudiant/notes")
+    .get(jwtMiddleware.VerifyAdminToken, noteController.GetAllNotesByStudentId);
 
-  app.route('/etudiants/:id_etudiant/modules/:id_module/notes')
-    .post(noteController.CreateANoteByStudentIdAndModuleId)
-    .get(noteController.GetAllNotesByModuleIdAndStudentId);
+  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
+  app.route("/etudiants/:id_etudiant/modules/:id_module/notes")
+    .post(jwtMiddleware.VerifyAdminOrGuestToken, noteController.CreateANoteByStudentIdAndModuleId)
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetAllNotesByModuleIdAndStudentId);
 
-  app.route('/etudiants/:id_etudiant/modules/:id_module/notes/:id_note')
-    .put(noteController.UpdateANoteByModuleIdAndStudentIdAndNoteId);
+  app.route("/etudiants/:id_etudiant/modules/:id_module/notes/:id_note")
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetANoteByModuleIdAndStudentIdAndNoteId)
+    .put(jwtMiddleware.VerifyAdminOrGuestToken, noteController.UpdateANoteByModuleIdAndStudentIdAndNoteId)
+    .delete(jwtMiddleware.VerifyAdminOrGuestToken, noteController.DeleteANoteByModuleIdAndStudentIdAndNoteId);
+  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
 };
