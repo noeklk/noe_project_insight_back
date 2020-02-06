@@ -235,7 +235,7 @@ exports.DeleteANoteByModuleIdAndStudentIdAndNoteId = async (req, res) => {
         Note.findOneAndDelete({ _id: id_note, id_etudiant, id_module }, req.body, { new: true }, (error, notes) => {
             if (!error && notes) {
                 res.status(200);
-                res.json(notes);
+                res.json({ message: "Note supprimé avec succès" });
             } else {
                 res.status(400);
                 console.log(error);

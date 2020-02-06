@@ -267,10 +267,16 @@ exports.DeleteAModuleByContributorIdAndSessionIdAndModuleId = async (req, res) =
       }
     });
 
-    Module.findOneAndDelete({ _id: id_module, id_intervenant, id_session }, req.body, { new: true }, (error, modules) => {
+    await Session.findOne({ _id: id_session }, (error, session) => {
+      if (!session) {
+        return res.status(400).json({ message: "La session n'existe pas" });
+      }
+    })
+
+    Module.findOneAndDelete({ _id: id_module, id_intervenant, id_session }, (error, modules) => {
       if (!error && modules) {
         res.status(200);
-        res.json(modules);
+        res.json({ message: "Module supprimé avec succès" });
       } else {
         res.status(400);
         console.log(error);
@@ -288,7 +294,7 @@ exports.DeleteAModuleById = (req, res) => {
   const { id_module } = req.params;
 
   try {
-    Module.findByIdAndRemove(id_module, (error, modules) => {
+    Module.findByIdAndDelete(id_module, (error, modules) => {
       if (!error && modules) {
         res.status(200);
         res.json({ message: `Le module avec l'id: ${id_module} a été correctement supprimé` });

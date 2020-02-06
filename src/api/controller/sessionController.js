@@ -89,7 +89,7 @@ exports.DeleteASessionById = (req, res) => {
   const { id_session } = req.params;
 
   try {
-    Session.findByIdAndRemove(id_session, (error, sessions) => {
+    Session.findByIdAndDelete(id_session, (error, sessions) => {
       if (!error && sessions) {
         res.status(200);
         res.json({ message: `La session avec l'id: ${id_session} a été correctement supprimé` });
