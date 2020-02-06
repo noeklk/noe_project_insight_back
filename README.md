@@ -33,4 +33,5 @@ Rename the .env.sample file to .env and insert your values
 + GUEST_JWT_KEY
 + ADMIN_JWT_KEY
 + DB_NAME (insert test if you want to use mocked datas from mongo/mongo-init.js)
- ######ps: To signup an admin user you must refer the ADMIN_JWT_KEY as a POST in a admin_code property
+
+##### To signup an admin user you must refer the ADMIN_JWT_KEY as a POST in a admin_code property
