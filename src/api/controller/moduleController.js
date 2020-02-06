@@ -21,25 +21,22 @@ exports.CreateAModuleByContributorIdAndSessionId = async (req, res) => {
       }
     });
 
-    Session.findById(id_session, (error, sessions) => {
-      if (!error && sessions) {
-        new_module.save((error, modules) => {
-          if (!error && modules) {
-            res.status(201);
-            res.json(modules);
-          } else {
-            res.status(400);
-            console.log(error);
-            res.json({ message: "Il manque des informations" });
-          }
-        });
-      } else {
-        res.status(400);
-        console.log(error);
-        res.json({ message: `L'id session: ${id_session} n'existe pas` });
+    await Session.findById(id_session, (error, sessions) => {
+      if (!sessions) {
+        return res.status(400).json({ message: "La session n'existe pas" });
       }
     });
 
+    await new_module.save((error, modules) => {
+      if (!error && modules) {
+        res.status(201);
+        res.json(modules);
+      } else {
+        res.status(400);
+        console.log(error);
+        res.json({ message: "Il manque des informations" });
+      }
+    });
   } catch (e) {
     res.status(500);
     console.log(e);

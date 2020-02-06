@@ -26,13 +26,16 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        required:  function () {
+        required: function () {
             if (this.role === "intervenant") {
                 this.password = undefined;
             } else {
                 return "Le mot de passe est un champ obligatoire";
             }
         }
+    },
+    admin_code: {
+        type: String
     },
     created_at: {
         type: Date,

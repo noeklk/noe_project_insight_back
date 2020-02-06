@@ -69,9 +69,18 @@ exports.GetAUserById = (req, res) => {
 
 exports.UserRegister = async (req, res) => {
     try {
+        const { ADMIN_JWT_KEY } = process.env;
         let new_user = new User(req.body);
-        let { password } = req.body;
+        const { password } = req.body;
+        const { role } = req.body;
+        const { admin_code } = req.body;
 
+        if (role === "admin" && admin_code != ADMIN_JWT_KEY) {
+            return res.status(400).json({ message: "Vous n'avez pas accès à la création de ce type de compte" })
+        }
+
+        new_user.admin_code = undefined;
+    
         let hashPass = bcrypt.hashSync(password, 10);
 
         new_user.password = hashPass;
@@ -101,28 +110,29 @@ exports.UserLogin = async (req, res) => {
         const { ADMIN_JWT_KEY } = process.env;
         const { GUEST_JWT_KEY } = process.env;
 
-        await User.findOne({ pseudo }, (error, user) => {
+        let user = await User.findOne({ pseudo }, (error, user) => {
             if (!user) {
                 return res.status(400).json({ message: "L'utilisateur n'existe pas" });
             } else if (!bcrypt.compareSync(password, user.password)) {
                 return res.status(400).json({ message: "Le mot de passe est incorrect" });
             }
-
-            let jwtKey = user.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
-
-            jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
-                if (!error && token) {
-                    res.status(200);
-                    res.cookie("accessToken", token, { maxAge: 600000, httpOnly: true });
-                    res.json({ token });
-                }
-                else {
-                    res.status(500);
-                    console.log(error);
-                    res.json({ message: errorMessage });
-                }
-            });
         });
+
+        let jwtKey = user.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+
+        jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
+            if (!error && token) {
+                res.status(200);
+                res.cookie("accessToken", token, { maxAge: 600000, httpOnly: true });
+                res.json({ token });
+            }
+            else {
+                res.status(500);
+                console.log(error);
+                res.json({ message: errorMessage });
+            }
+        });
+
     } catch (e) {
         res.status(500);
         console.log(e);

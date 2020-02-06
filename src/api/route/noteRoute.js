@@ -23,7 +23,8 @@ module.exports = (app) => {
     .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetAllNotesByModuleIdAndStudentId);
 
   app.route("/etudiants/:id_etudiant/modules/:id_module/notes/:id_note")
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetANoteByModuleIdAndStudentIdAndNoteId)
     .put(jwtMiddleware.VerifyAdminOrGuestToken, noteController.UpdateANoteByModuleIdAndStudentIdAndNoteId)
     .delete(jwtMiddleware.VerifyAdminOrGuestToken, noteController.DeleteANoteByModuleIdAndStudentIdAndNoteId);
-    ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
+  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
 };
