@@ -124,7 +124,7 @@ exports.UserLogin = async (req, res) => {
             if (!error && token) {
                 res.status(200);
                 res.cookie("accessToken", token, { maxAge: 600000, httpOnly: true });
-                res.json({ token });
+                res.json(user);
             }
             else {
                 res.status(500);

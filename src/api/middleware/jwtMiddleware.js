@@ -23,11 +23,11 @@ exports.VerifyAdminToken = (req, res, next) => {
         }
         else {
             res.status(403);
-            res.json({ message: errorMessage })
+            res.json({ message: "Vous n'avez pas de token d'authentificaton" });
         }
     } catch (e) {
         res.status(500);
-        res.json({ message: errorMessage })
+        res.json({ message: errorMessage });
     }
 }
 
@@ -49,11 +49,11 @@ exports.VerifyGuestToken = (req, res, next) => {
         }
         else {
             res.status(403);
-            res.json({ message: errorMessage })
+            res.json({ message: "Vous n'avez pas de token d'authentificaton" });
         }
     } catch (e) {
         res.status(500);
-        res.json({ message: errorMessage })
+        res.json({ message: errorMessage });
     }
 }
 
@@ -81,10 +81,10 @@ exports.VerifyAdminOrGuestToken = (req, res, next) => {
         }
         else {
             res.status(403);
-            res.json({ message: errorMessage })
+            res.json({ message: "Vous n'avez pas de token d'authentificaton" });
         }
     } catch (e) {
         res.status(500);
-        res.json({ message: errorMessage })
+        res.json({ message: errorMessage });
     }
 }
