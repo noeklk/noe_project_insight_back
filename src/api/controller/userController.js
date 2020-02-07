@@ -67,7 +67,7 @@ exports.GetAUserById = (req, res) => {
     }
 }
 
-exports.UserRegister = async (req, res) => {
+exports.UserRegister = (req, res) => {
     try {
         const { ADMIN_JWT_KEY } = process.env;
         let new_user = new User(req.body);
@@ -77,24 +77,26 @@ exports.UserRegister = async (req, res) => {
 
         if (role === "admin" && admin_code != ADMIN_JWT_KEY) {
             return res.status(400).json({ message: "Vous n'avez pas accès à la création de ce type de compte" })
+        } else {
+            new_user.admin_code = undefined;
+
+            let hashPass = bcrypt.hashSync(password, 10);
+
+            new_user.password = hashPass;
+
+            new_user.save((error, user) => {
+                if (!error && user) {
+                    res.status(201);
+                    res.json(user);
+                } else {
+                    res.status(400);
+                    console.log(error);
+                    res.json({ message: `L'utilisateur à l'identifiant: ${new_user.pseudo} existe déjà` });
+                }
+            });
         }
 
-        new_user.admin_code = undefined;
-    
-        let hashPass = bcrypt.hashSync(password, 10);
 
-        new_user.password = hashPass;
-
-        await new_user.save((error, user) => {
-            if (!error && user) {
-                res.status(201);
-                res.json(user);
-            } else {
-                res.status(400);
-                console.log(error);
-                res.json({ message: `L'utilisateur à l'identifiant: ${new_user.pseudo} existe déjà` });
-            }
-        });
     }
     catch (e) {
         res.status(500);
@@ -103,36 +105,37 @@ exports.UserRegister = async (req, res) => {
     }
 }
 
-exports.UserLogin = async (req, res) => {
+exports.UserLogin = (req, res) => {
     try {
         const { pseudo } = req.body;
         const { password } = req.body;
         const { ADMIN_JWT_KEY } = process.env;
         const { GUEST_JWT_KEY } = process.env;
 
-        let user = await User.findOne({ pseudo }, (error, user) => {
+        console.log(req.body);
+
+        User.findOne({ pseudo }, (error, user) => {
             if (!user) {
                 return res.status(400).json({ message: "L'utilisateur n'existe pas" });
             } else if (!bcrypt.compareSync(password, user.password)) {
                 return res.status(400).json({ message: "Le mot de passe est incorrect" });
+            } else {
+                let jwtKey = user.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+
+                jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
+                    if (!error && token) {
+                        res.status(200);
+                        res.cookie("token", token, { maxAge: 600000, httpOnly: false });
+                        res.json({ token });
+                    }
+                    else {
+                        res.status(500);
+                        console.log(error);
+                        res.json({ message: errorMessage });
+                    }
+                });
             }
         });
-
-        let jwtKey = user.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
-
-        jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
-            if (!error && token) {
-                res.status(200);
-                res.cookie("accessToken", token, { maxAge: 600000, httpOnly: true });
-                res.json(user);
-            }
-            else {
-                res.status(500);
-                console.log(error);
-                res.json({ message: errorMessage });
-            }
-        });
-
     } catch (e) {
         res.status(500);
         console.log(e);

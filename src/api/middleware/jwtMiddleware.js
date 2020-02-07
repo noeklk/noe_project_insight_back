@@ -7,11 +7,11 @@ const { ADMIN_JWT_KEY } = process.env;
 const { GUEST_JWT_KEY } = process.env;
 
 exports.VerifyAdminToken = (req, res, next) => {
-    let { accessToken } = req.cookies;
+    let { token } = req.cookies;
 
     try {
-        if (accessToken) {
-            jwt.verify(accessToken, ADMIN_JWT_KEY, (error, result) => {
+        if (token) {
+            jwt.verify(token, ADMIN_JWT_KEY, (error, result) => {
                 if (!error && result) {
                     next();
                 }
@@ -33,11 +33,11 @@ exports.VerifyAdminToken = (req, res, next) => {
 
 
 exports.VerifyGuestToken = (req, res, next) => {
-    let { accessToken } = req.cookies;
+    let { token } = req.cookies;
 
     try {
-        if (accessToken) {
-            jwt.verify(accessToken, GUEST_JWT_KEY, (error, result) => {
+        if (token) {
+            jwt.verify(token, GUEST_JWT_KEY, (error, result) => {
                 if (!error && result) {
                     next();
                 }
@@ -58,16 +58,18 @@ exports.VerifyGuestToken = (req, res, next) => {
 }
 
 exports.VerifyAdminOrGuestToken = (req, res, next) => {
-    let { accessToken } = req.cookies;
+    let { token } = req.cookies;
+    console.log(token);
+
 
     try {
-        if (accessToken) {
-            jwt.verify(accessToken, GUEST_JWT_KEY, (error, result) => {
+        if (token) {
+            jwt.verify(token, GUEST_JWT_KEY, (error, result) => {
                 if (!error && result) {
                     next();
                 }
                 else {
-                    jwt.verify(accessToken, ADMIN_JWT_KEY, (error, result) => {
+                    jwt.verify(token, ADMIN_JWT_KEY, (error, result) => {
                         if (!error && result) {
                             next();
                         }
