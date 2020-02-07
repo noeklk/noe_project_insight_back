@@ -48,7 +48,7 @@ exports.CreateANoteByStudentIdAndModuleId = async (req, res) => {
 exports.GetAllNotes = (req, res) => {
     try {
         Note.find((error, notes) => {
-            if (!error && notes) {
+            if (!error && notes.length) {
                 res.status(200);
                 res.json(notes);
             } else {
@@ -158,6 +158,40 @@ exports.GetAllNotesByModuleIdAndStudentId = async (req, res) => {
                 res.json({ message: "Aucune note trouvée pour cette utilisateur sur ce module" });
             }
         });
+    } catch (e) {
+        res.status(500);
+        console.log(e);
+        res.json({ message: errorMessage });
+    }
+}
+
+exports.GetNotesAverageByModuleId = async (req, res) => {
+    const { id_module } = req.params;
+
+    try {
+        await Module.findOne({ _id: id_module }, (error, modules) => {
+            if (!modules) {
+                return res.status(400).json({ message: "Le module n'existe pas" });
+            }
+        });
+
+        await Note.find({ id_module }, (error, notes) => {
+            if (!error && notes.length) {
+                var sum = 0;
+                for (let i = 0; i < notes.length; i++) {
+                    sum += notes[i].note;
+                }
+
+                let average = sum / notes.length;
+                res.status(200);
+                res.json({ message: `La note moyenne de ce module est de ${average}` });
+            }
+            else {
+                res.status(400);
+                res.json({ message: "Aucune note trouvé dans ce module" });
+            }
+        })
+
     } catch (e) {
         res.status(500);
         console.log(e);

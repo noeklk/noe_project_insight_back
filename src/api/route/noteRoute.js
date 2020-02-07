@@ -22,6 +22,9 @@ module.exports = (app) => {
     .post(jwtMiddleware.VerifyAdminOrGuestToken, noteController.CreateANoteByStudentIdAndModuleId)
     .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetAllNotesByModuleIdAndStudentId);
 
+  app.route("/modules/:id_module/notes/average")
+  .get(jwtMiddleware.VerifyAdminToken, noteController.GetNotesAverageByModuleId)
+
   app.route("/etudiants/:id_etudiant/modules/:id_module/notes/:id_note")
     .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetANoteByModuleIdAndStudentIdAndNoteId)
     .put(jwtMiddleware.VerifyAdminOrGuestToken, noteController.UpdateANoteByModuleIdAndStudentIdAndNoteId)

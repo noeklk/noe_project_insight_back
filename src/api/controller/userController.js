@@ -29,7 +29,7 @@ exports.CreateAUser = (req, res) => {
 exports.GetAllUsers = (req, res) => {
     try {
         User.find((error, users) => {
-            if (!error && users) {
+            if (!error && users.length) {
                 res.status(200);
                 res.json(users);
             }
