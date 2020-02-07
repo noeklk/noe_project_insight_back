@@ -27,7 +27,7 @@ exports.CreateASession = (req, res) => {
 exports.GetAllSessions = (req, res) => {
   try {
     Session.find((error, sessions) => {
-      if (!error && sessions) {
+      if (!error && sessions.length) {
         res.status(200);
         res.json(sessions);
       } else {
