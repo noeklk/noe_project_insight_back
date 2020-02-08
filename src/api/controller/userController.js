@@ -125,8 +125,8 @@ exports.UserLogin = (req, res) => {
                 jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
                     if (!error && token) {
                         res.status(200);
-                        res.cookie("token", token, { maxAge: 600000, httpOnly: false });
-                        res.json({ token });
+                        res.cookie("token", token, { maxAge: 600000, httpOnly: true });
+                        res.json({ token, user: { id: user._id } });
                     }
                     else {
                         res.status(500);

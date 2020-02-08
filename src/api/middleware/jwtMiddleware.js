@@ -7,7 +7,7 @@ const { ADMIN_JWT_KEY } = process.env;
 const { GUEST_JWT_KEY } = process.env;
 
 exports.VerifyAdminToken = (req, res, next) => {
-    let { token } = req.cookies;
+    let token = req.headers.authorization ? req.headers.authorization : req.cookies.token;
 
     try {
         if (token) {
@@ -33,7 +33,7 @@ exports.VerifyAdminToken = (req, res, next) => {
 
 
 exports.VerifyGuestToken = (req, res, next) => {
-    let { token } = req.cookies;
+    let token = req.headers.authorization ? req.headers.authorization : req.cookies.token;
 
     try {
         if (token) {
@@ -58,9 +58,7 @@ exports.VerifyGuestToken = (req, res, next) => {
 }
 
 exports.VerifyAdminOrGuestToken = (req, res, next) => {
-    let { token } = req.cookies;
-    console.log(token);
-
+    let token = req.headers.authorization ? req.headers.authorization : req.cookies.token;
 
     try {
         if (token) {

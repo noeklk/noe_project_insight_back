@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 // Configuration réseau
 const app = express();
@@ -19,13 +20,12 @@ mongoose.set("useCreateIndex", true);
 // Permet l'envoi d'objet js en json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Permet le parse du cookie dans les headers
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-})
+// Permet l'usage de l'api en local et l'envoi des headers
+app.use(cors());
 
 // Importe la fonction anonyme dans la constante
 const noteRoute = require("./api/route/noteRoute");
