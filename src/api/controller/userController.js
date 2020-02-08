@@ -114,28 +114,37 @@ exports.UserLogin = (req, res) => {
 
         console.log(req.body);
 
-        User.findOne({ pseudo }, (error, user) => {
-            if (!user) {
-                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-            } else if (!bcrypt.compareSync(password, user.password)) {
-                return res.status(400).json({ message: "Le mot de passe est incorrect" });
-            } else {
-                let jwtKey = user.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+        if (pseudo) {
 
-                jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
-                    if (!error && token) {
-                        res.status(200);
-                        res.cookie("token", token, { maxAge: 600000, httpOnly: true });
-                        res.json({ token, user: { id: user._id } });
-                    }
-                    else {
-                        res.status(500);
-                        console.log(error);
-                        res.json({ message: errorMessage });
-                    }
-                });
-            }
-        });
+            User.findOne({ pseudo }, (error, user) => {
+                if (!user) {
+                    return res.status(400).json({ message: "L'utilisateur n'existe pas" });
+                }
+                else if (!password) {
+                    return res.status(400).json({ message: "Veuillez renseigner un mot de passe" });
+                }
+                else if (!bcrypt.compareSync(password, user.password)) {
+                    return res.status(400).json({ message: "Le mot de passe est incorrect" });
+                } else {
+                    let jwtKey = user.role === "admin" ? ADMIN_JWT_KEY : GUEST_JWT_KEY;
+
+                    jwt.sign({ pseudo }, jwtKey, { expiresIn: "10m" }, (error, token) => {
+                        if (!error && token) {
+                            res.status(200);
+                            res.cookie("token", token, { maxAge: 600000, httpOnly: true });
+                            res.json({ token, user: { id: user._id } });
+                        }
+                        else {
+                            res.status(500);
+                            console.log(error);
+                            res.json({ message: errorMessage });
+                        }
+                    });
+                }
+            });
+        } else {
+            return res.status(400).json({ message: "Veuillez renseigner un nom d'utilisateur" });
+        }
     } catch (e) {
         res.status(500);
         console.log(e);
