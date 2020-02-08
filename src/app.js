@@ -27,6 +27,10 @@ app.use(cookieParser());
 // Permet l'usage de l'api en local et l'envoi des headers
 app.use(cors());
 
+// Check la validé du token
+const tokenRoute = require("./api/route/tokenRoute");
+tokenRoute(app);
+
 // Importe la fonction anonyme dans la constante
 const noteRoute = require("./api/route/noteRoute");
 const moduleRoute = require("./api/route/moduleRoute");

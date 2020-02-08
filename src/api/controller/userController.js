@@ -114,8 +114,9 @@ exports.UserLogin = (req, res) => {
 
         console.log(req.body);
 
-        if (pseudo) {
-
+        if (!pseudo) {
+            return res.status(400).json({ message: "Veuillez renseigner un nom d'utilisateur" });
+        } else {
             User.findOne({ pseudo }, (error, user) => {
                 if (!user) {
                     return res.status(400).json({ message: "L'utilisateur n'existe pas" });
@@ -142,8 +143,6 @@ exports.UserLogin = (req, res) => {
                     });
                 }
             });
-        } else {
-            return res.status(400).json({ message: "Veuillez renseigner un nom d'utilisateur" });
         }
     } catch (e) {
         res.status(500);

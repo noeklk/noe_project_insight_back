@@ -73,7 +73,7 @@ exports.VerifyAdminOrGuestToken = (req, res, next) => {
                         }
                         else {
                             res.status(403);
-                            res.json({ message: "Vous n'avez pas les autorisations pour exécuter cette action" });
+                            res.json({ message: "Token non valide" });
                         }
                     })
                 }
