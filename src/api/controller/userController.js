@@ -112,17 +112,14 @@ exports.UserLogin = (req, res) => {
         const { ADMIN_JWT_KEY } = process.env;
         const { GUEST_JWT_KEY } = process.env;
 
-        console.log(req.body);
-
         if (!pseudo) {
             return res.status(400).json({ message: "Veuillez renseigner un nom d'utilisateur" });
+        } else if (!password) {
+            return res.status(400).json({ message: "Veuillez renseigner un mot de passe" });
         } else {
             User.findOne({ pseudo }, (error, user) => {
                 if (!user) {
                     return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-                }
-                else if (!password) {
-                    return res.status(400).json({ message: "Veuillez renseigner un mot de passe" });
                 }
                 else if (!bcrypt.compareSync(password, user.password)) {
                     return res.status(400).json({ message: "Le mot de passe est incorrect" });
