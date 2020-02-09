@@ -3,9 +3,6 @@ const jwtMiddleware = require("../middleware/jwtMiddleware");
 
 module.exports = (app) => {
     app.route("/users")
-        .post(jwtMiddleware.VerifyAdminToken, userController.CreateAUser);
-
-    app.route("/users")
         .get(jwtMiddleware.VerifyAdminOrGuestToken, userController.GetAllUsers);
 
     app.route("/users/:id_user")

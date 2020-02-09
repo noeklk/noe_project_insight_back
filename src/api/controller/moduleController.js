@@ -171,38 +171,6 @@ exports.GetAllModulesByContributorIdAndSessionId = (req, res) => {
   }
 }
 
-exports.GetAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
-  const { id_intervenant } = req.params;
-  const { id_session } = req.params;
-  const { id_module } = req.params;
-
-  try {
-    User.findOne({ _id: id_intervenant }, (error, user) => {
-      if (!user) {
-        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-      } else if (user.role !== "intervenant") {
-        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
-      } else {
-
-        Module.find({ _id: id_module, id_intervenant, id_session }, (error, modules) => {
-          if (!error && modules.length) {
-            res.status(200);
-            res.json(modules);
-          } else {
-            res.status(400);
-            console.log(error);
-            res.json({ message: `Aucun module portant pour id: ${id_module}, id session: ${id_session} et id intervenant: ${id_intervenant} trouvé` });
-          }
-        });
-      }
-    });
-  } catch (e) {
-    res.status(500);
-    console.log(e);
-    res.json({ message: errorMessage });
-  }
-}
-
 exports.UpdateAModuleById = (req, res) => {
   const { id_module } = req.params;
 
@@ -223,77 +191,6 @@ exports.UpdateAModuleById = (req, res) => {
     res.json({ message: errorMessage });
   }
 };
-
-exports.UpdateAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
-  const { id_intervenant } = req.params;
-  const { id_session } = req.params;
-  const { id_module } = req.params;
-
-  try {
-    User.findOne({ _id: id_intervenant }, (error, user) => {
-      if (!user) {
-        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-      } else if (user.role !== "intervenant") {
-        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
-      } else {
-
-        Module.findOneAndUpdate({ _id: id_module, id_intervenant, id_session }, req.body, { new: true }, (error, modules) => {
-          if (!error && modules) {
-            res.status(200);
-            res.json(modules);
-          } else {
-            res.status(400);
-            console.log(error);
-            res.json({ message: `Le module avec l'id: ${id_module}, l'id d'intervenant: ${id_intervenant} et l'id session: ${id_session} n'existe pas` });
-          }
-        });
-      }
-    });
-  } catch (e) {
-    res.status(500);
-    console.log(e);
-    res.json({ message: errorMessage });
-  }
-}
-
-exports.DeleteAModuleByContributorIdAndSessionIdAndModuleId = (req, res) => {
-  const { id_intervenant } = req.params;
-  const { id_session } = req.params;
-  const { id_module } = req.params;
-
-  try {
-    User.findOne({ _id: id_intervenant }, (error, user) => {
-      if (!user) {
-        return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-      } else if (user.role !== "intervenant") {
-        return res.status(400).json({ message: "L'utilisateur n'est pas un intervenant" });
-      } else {
-
-        Session.findOne({ _id: id_session }, (error, session) => {
-          if (!session) {
-            return res.status(400).json({ message: "La session n'existe pas" });
-          } else {
-            
-            Module.findOneAndDelete({ _id: id_module, id_intervenant, id_session }, (error, modules) => {
-              if (!error && modules) {
-                res.status(200);
-                res.json({ message: "Module supprimé avec succès" });
-              } else {
-                res.status(400);
-                console.log(error);
-                res.json({ message: `Le module avec l'id: ${id_module}, l'id d'intervenant: ${id_intervenant} et l'id session: ${id_session} n'existe pas` });
-              }
-            });
-          }
-        });
-      }
-    });
-  } catch (e) {
-    res.status(500);
-    console.log(e);
-    res.json({ message: errorMessage });
-  }
-}
 
 exports.DeleteAModuleById = (req, res) => {
   const { id_module } = req.params;

@@ -44,6 +44,7 @@ db.modules.insertMany([
 
 // Utilisateurs
 db.users.insertMany([
+  // Intervenant
   {
     _id: ObjectId("5e3609dd3a957000387b4ede"),
     nom: "mock_nom_1",
@@ -62,6 +63,7 @@ db.users.insertMany([
     password: "mock_password_2",
     created_at: Date.now.apply()
   },
+  // Etudiant
   {
     _id: ObjectId("5e3609dd3a957000387b4eef"),
     nom: "mock_nom_3",
@@ -80,13 +82,14 @@ db.users.insertMany([
     password: "mock_password_4",
     created_at: Date.now.apply()
   },
+  // Admin
   {
     _id: ObjectId("5e3609dd3a957000387b4fff"),
     nom: "mock_nom_5",
     prenom: "mock_prenom_5",
     role: "admin",
-    pseudo: "mock_pseudo_5",
-    password: "mock_password_5",
+    pseudo: "admin",
+    password: "$2a$10$uDlj0JXL9AUp6ZJkTesOt.qYf5KUzITch6T8CEP0my0lgOCRpGHh6", // mdp = admin
     created_at: Date.now.apply()
   }
 ]);

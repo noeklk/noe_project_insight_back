@@ -203,38 +203,6 @@ exports.GetNotesAverageByModuleId = (req, res) => {
     }
 }
 
-exports.GetANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
-    const { id_module } = req.params;
-    const { id_etudiant } = req.params;
-    const { id_note } = req.params;
-
-    try {
-        User.findOne({ _id: id_etudiant }, (error, user) => {
-            if (!user) {
-                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-            } else if (user.role !== "etudiant") {
-                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
-            } else {
-
-                Note.findOne({ _id: id_note, id_module, id_etudiant }, (error, notes) => {
-                    if (!error && notes) {
-                        res.status(200);
-                        res.json(notes);
-                    } else {
-                        res.status(400);
-                        console.log(error);
-                        res.json({ message: "Aucune note trouvée pour cette utilisateur sur ce module" });
-                    }
-                });
-            }
-        });
-    } catch (e) {
-        res.status(500);
-        console.log(e);
-        res.json({ message: errorMessage });
-    }
-}
-
 exports.UpdateANoteById = (req, res) => {
     const { id_note } = req.params;
 
@@ -249,69 +217,6 @@ exports.UpdateANoteById = (req, res) => {
                 res.json({ message: `L'id de note: ${id_note} n'existe pas` });
             }
         })
-    } catch (e) {
-        res.status(500);
-        console.log(e);
-        res.json({ message: errorMessage });
-    }
-}
-
-exports.UpdateANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
-    const { id_etudiant } = req.params;
-    const { id_module } = req.params;
-    const { id_note } = req.params;
-
-    try {
-        User.findOne({ _id: id_etudiant }, (error, user) => {
-            if (!user) {
-                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-            } else if (user.role !== "etudiant") {
-                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
-            } else {
-
-                Note.findOneAndUpdate({ _id: id_note, id_etudiant, id_module }, req.body, { new: true }, (error, notes) => {
-                    if (!error && notes) {
-                        res.status(200);
-                        res.json(notes);
-                    } else {
-                        res.status(400);
-                        console.log(error);
-                        res.json({ message: `L'id de note: ${id_note} avec l'id etudiant: ${id_etudiant} et l'id module: ${id_module} n'existe pas` });
-                    }
-                });
-            }
-        });
-    } catch (e) {
-        res.status(500);
-        console.log(e);
-        res.json({ message: errorMessage });
-    }
-}
-
-exports.DeleteANoteByModuleIdAndStudentIdAndNoteId = (req, res) => {
-    const { id_etudiant } = req.params;
-    const { id_module } = req.params;
-    const { id_note } = req.params;
-
-    try {
-        User.findOne({ _id: id_etudiant }, (error, user) => {
-            if (!user) {
-                return res.status(400).json({ message: "L'utilisateur n'existe pas" });
-            } else if (user.role !== "etudiant") {
-                return res.status(400).json({ message: "L'utilisateur n'est pas un étudiant" });
-            } else {
-                Note.findOneAndDelete({ _id: id_note, id_etudiant, id_module }, req.body, { new: true }, (error, notes) => {
-                    if (!error && notes) {
-                        res.status(200);
-                        res.json({ message: "Note supprimé avec succès" });
-                    } else {
-                        res.status(400);
-                        console.log(error);
-                        res.json({ message: `L'id de note: ${id_note} avec l'id etudiant: ${id_etudiant} et l'id module: ${id_module} n'existe pas` });
-                    }
-                });
-            }
-        });
     } catch (e) {
         res.status(500);
         console.log(e);
