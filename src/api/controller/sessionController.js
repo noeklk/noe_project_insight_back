@@ -71,11 +71,11 @@ exports.UpdateASessionById = (req, res) => {
     Session.findByIdAndUpdate(id_session, req.body, { new: true }, (error, sessions) => {
       if (!error && sessions) {
         res.status(200);
-        res.json(sessions);
+        res.json({ message: `L'id session: ${id_session} a bien été modifié` });
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: `L'id session: ${id_session} est introuvable` })
+        res.json({ message: `L'id session: ${id_session} est introuvable` });
       }
     });
   } catch (e) {

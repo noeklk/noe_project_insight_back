@@ -160,12 +160,12 @@ exports.UpdateAUserById = (req, res) => {
             if (!error && users) {
                 res.status(200);
                 console.log(res);
-                res.json(users);
+                res.json({ message: `L'id d'utilisateur: ${id_user} a bien été modifié` });
             }
             else {
                 res.status(400);
                 console.log(error);
-                res.json({ message: errorMessage });
+                res.json({ message: `L'id d'utilisateur: ${id_user} est introuvable` });
             }
         });
     } catch (e) {

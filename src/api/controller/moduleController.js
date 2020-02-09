@@ -178,7 +178,7 @@ exports.UpdateAModuleById = (req, res) => {
     Module.findByIdAndUpdate(id_module, req.body, { new: true }, (error, modules) => {
       if (!error && modules) {
         res.status(200);
-        res.json(modules);
+        res.json({ message: `L'id de module avec l'id: ${id_module} a bien été modifié` });
       } else {
         res.status(400);
         console.log(error);

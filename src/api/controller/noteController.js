@@ -25,7 +25,7 @@ exports.CreateANoteByStudentIdAndModuleId = (req, res) => {
                     if (!users) {
                         return res.status(400).json({ message: "Le module n'existe pas" });
                     } else {
-                        
+
                         new_note.save((error, notes) => {
                             if (!error && notes) {
                                 res.status(201);
@@ -210,7 +210,7 @@ exports.UpdateANoteById = (req, res) => {
         Note.findByIdAndUpdate(id_note, req.body, { new: true }, (error, notes) => {
             if (!error && notes) {
                 res.status(200);
-                res.json(notes);
+                res.json({ message: `L'id de note: ${id_note} a bien été modifié` });
             } else {
                 res.status(400);
                 console.log(error);
