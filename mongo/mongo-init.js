@@ -50,7 +50,7 @@ db.users.insertMany([
     prenom: "mock_prenom_1",
     role: "intervenant",
     pseudo: "mock_pseudo_1",
-    password: "mock_password_1",
+    password: "$2a$10$zInvz8bjJCBXR9CkQw7q7O6UKQVqgrmrSLR48fS09FO7VdAWnDCn6",
     created_at: Date.now.apply()
   },
   {

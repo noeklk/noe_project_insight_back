@@ -150,8 +150,12 @@ exports.UserLogin = (req, res) => {
 
 exports.UpdateAUserById = (req, res) => {
     const { id_user } = req.params;
+    const { password } = req.body;
 
     try {
+        let hashPass = bcrypt.hashSync(password, 10);
+        req.body.password = hashPass;
+
         User.findOneAndUpdate(id_user, req.body, { new: true }, (error, users) => {
             if (!error && users) {
                 res.status(200);
