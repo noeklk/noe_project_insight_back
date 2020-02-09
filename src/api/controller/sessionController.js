@@ -10,11 +10,11 @@ exports.CreateASession = (req, res) => {
     new_session.save((error, sessions) => {
       if (!error && sessions) {
         res.status(201);
-        res.json(sessions);
+        res.json({ message: "La session a été crée avec succès" });
       } else {
         res.status(400);
         console.log(error);
-        res.json({ message: "Il manque des infos", details: error });
+        res.json({ message: "La session existe déjà ou il manque des informations" });
       }
     });
   } catch (e) {
