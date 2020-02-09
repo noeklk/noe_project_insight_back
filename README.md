@@ -50,8 +50,12 @@ Here is a few requirements to use the application with this api
 - You must run both the api and application on the same environment
   + Use `docker-compose up` for both then navigate to `localhost:4200` OR `127.0.0.1:4200`
   + Then if you used mocked datas by entering `test` into the `DB_NAME` environment key, you should be able to login the application with :
-    + login: admin
-    + password: admin
+    > Admin
+      + login: admin
+      + password: admin
+    > Etudiant
+      + login: etudiant1
+      + password: etudiant1
     
 # Also
 All routes are protected by token verification (10mn validity), so you must at least login with either a guest or admin account to use any of them.
