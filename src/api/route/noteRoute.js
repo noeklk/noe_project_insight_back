@@ -15,7 +15,7 @@ module.exports = (app) => {
     .get(jwtMiddleware.VerifyAdminToken, noteController.GetAllNotesByModuleId);
 
   app.route("/etudiants/:id_etudiant/notes")
-    .get(jwtMiddleware.VerifyAdminToken, noteController.GetAllNotesByStudentId);
+    .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetAllNotesByStudentId);
 
   app.route("/etudiants/:id_etudiant/modules/:id_module/notes")
     .post(jwtMiddleware.VerifyAdminOrGuestToken, noteController.CreateANoteByStudentIdAndModuleId)

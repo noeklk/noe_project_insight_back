@@ -50,8 +50,8 @@ db.users.insertMany([
     nom: "mock_nom_1",
     prenom: "mock_prenom_1",
     role: "intervenant",
-    pseudo: "mock_pseudo_1",
-    password: "$2a$10$zInvz8bjJCBXR9CkQw7q7O6UKQVqgrmrSLR48fS09FO7VdAWnDCn6",
+    pseudo: "intervenant1",
+    password: "$2a$10$vmTfwHejp/GbMFgDfh6XFetVP6ChS5pgWAKyZ3.3Lgfu0kfr3a1wC", // mdp = intervenant1
     created_at: Date.now.apply()
   },
   {
@@ -59,8 +59,8 @@ db.users.insertMany([
     nom: "mock_nom_2",
     prenom: "mock_prenom_2",
     role: "intervenant",
-    pseudo: "mock_pseudo_2",
-    password: "mock_password_2",
+    pseudo: "intervenant2",
+    password: "$2a$10$3bVl7EkhrAZcBOxe6W3I9.7L2incQh1e3nj6n1wfZpwrAOJOElqBi", // mdp = intervenant2
     created_at: Date.now.apply()
   },
   // Etudiant
@@ -69,8 +69,8 @@ db.users.insertMany([
     nom: "mock_nom_3",
     prenom: "mock_prenom_3",
     role: "etudiant",
-    pseudo: "mock_pseudo_3",
-    password: "mock_password_3",
+    pseudo: "etudiant1",
+    password: "$2a$10$XgySW3xKDoVp/wq79XMKs.f.PnCGbi6/wBYKMoeI4nKravs0LQ.B2", // mdp = etudiant1
     created_at: Date.now.apply()
   },
   {
@@ -78,8 +78,8 @@ db.users.insertMany([
     nom: "mock_nom_4",
     prenom: "mock_prenom_4",
     role: "etudiant",
-    pseudo: "mock_pseudo_4",
-    password: "mock_password_4",
+    pseudo: "etudiant2",
+    password: "$2a$10$pSF1D/.kaHcjOWx59rAEMuuodywjbOHemGNwCccVWhfAXlxv6N/26", // mdp = etudiant2
     created_at: Date.now.apply()
   },
   // Admin
