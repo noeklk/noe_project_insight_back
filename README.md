@@ -55,4 +55,4 @@ Here is a few requirements to use the application with this api
     
 # Also
 All routes are protected by token verification (10mn validity), so you must at least login with either a guest or admin account to use any of them.
-> Postman Collection: https://textup.fr/403649uC
+> Postman Collection: https://textup.fr/403649uC OR https://www.transfernow.net/ddl/postman-json
