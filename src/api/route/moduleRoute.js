@@ -17,7 +17,6 @@ module.exports = (app) => {
   app.route("/intervenants/:id_intervenant/modules")
     .get(jwtMiddleware.VerifyAdminToken, moduleController.GetAllModulesByContributorId);
 
-  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
   app.route("/intervenants/:id_intervenant/sessions/:id_session/modules")
     .post(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.CreateAModuleByContributorIdAndSessionId)
     .get(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.GetAllModulesByContributorIdAndSessionId);
@@ -26,5 +25,4 @@ module.exports = (app) => {
     .get(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.GetAModuleByContributorIdAndSessionIdAndModuleId)
     .put(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.UpdateAModuleByContributorIdAndSessionIdAndModuleId)
     .delete(jwtMiddleware.VerifyAdminOrGuestToken, moduleController.DeleteAModuleByContributorIdAndSessionIdAndModuleId);
-  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
 };

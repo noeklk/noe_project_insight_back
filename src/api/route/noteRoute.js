@@ -17,7 +17,6 @@ module.exports = (app) => {
   app.route("/etudiants/:id_etudiant/notes")
     .get(jwtMiddleware.VerifyAdminToken, noteController.GetAllNotesByStudentId);
 
-  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
   app.route("/etudiants/:id_etudiant/modules/:id_module/notes")
     .post(jwtMiddleware.VerifyAdminOrGuestToken, noteController.CreateANoteByStudentIdAndModuleId)
     .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetAllNotesByModuleIdAndStudentId);
@@ -29,5 +28,4 @@ module.exports = (app) => {
     .get(jwtMiddleware.VerifyAdminOrGuestToken, noteController.GetANoteByModuleIdAndStudentIdAndNoteId)
     .put(jwtMiddleware.VerifyAdminOrGuestToken, noteController.UpdateANoteByModuleIdAndStudentIdAndNoteId)
     .delete(jwtMiddleware.VerifyAdminOrGuestToken, noteController.DeleteANoteByModuleIdAndStudentIdAndNoteId);
-  ///////////////////////// A UTILISER DANS L'APPLICATION /////////////////////////
 };
