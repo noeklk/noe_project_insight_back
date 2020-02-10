@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const noteSchema = new Schema({
     note: {
         type: Number,
+        min: 0,
+        max: 20,
         required: "Il faut une note pour le module"
     },
     message: {
