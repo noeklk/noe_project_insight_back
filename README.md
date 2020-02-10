@@ -43,6 +43,7 @@ Rename the .env.sample file to .env and insert your values
 + `pseudo` (ps: if no pseudo is given, the result will be `prenom.nom`
 + `password`
 + `admin_code` (optional: ADMIN_JWT_KEY)
+##### To the following route: `http://localhost:3000/users/register` with postman
 
 # The application using this api is available here : https://github.com/noeklk/noe_project_inside_front
 Here is a few requirements to use the application with this api
